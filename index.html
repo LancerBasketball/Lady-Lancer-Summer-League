@@ -25,9 +25,8 @@
     :root {
       --page-background: #eef1f5;
       --dark: #111827;
-      --light-border: #d1d5db;
-      --muted-text: #6b7280;
-
+      --border: #d1d5db;
+      --muted: #6b7280;
       --oreb: #15803d;
       --dreb: #1d4ed8;
       --live-turnover: #d97706;
@@ -63,6 +62,7 @@
 
     button {
       touch-action: manipulation;
+      cursor: pointer;
     }
 
     .app {
@@ -76,21 +76,15 @@
         max(30px, env(safe-area-inset-bottom));
     }
 
-    .app-header {
-      margin-bottom: 14px;
-    }
-
     .app-title {
       margin: 0;
       font-size: clamp(28px, 5vw, 42px);
       font-weight: 900;
-      letter-spacing: -0.03em;
     }
 
     .app-subtitle {
-      margin: 4px 0 0;
-      color: var(--muted-text);
-      font-size: 16px;
+      margin: 4px 0 16px;
+      color: var(--muted);
     }
 
     .game-information {
@@ -105,17 +99,16 @@
       width: 100%;
       min-height: 56px;
       padding: 10px 13px;
-      border: 2px solid var(--light-border);
+      border: 2px solid var(--border);
       border-radius: 14px;
       background: white;
-      color: var(--dark);
       font-size: 18px;
       font-weight: 700;
     }
 
     .tabs {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 6px;
       padding: 5px;
       margin-bottom: 16px;
@@ -129,9 +122,7 @@
       border-radius: 12px;
       background: transparent;
       color: #4b5563;
-      font-size: 18px;
       font-weight: 850;
-      cursor: pointer;
     }
 
     .tab-button.active {
@@ -163,11 +154,7 @@
       border-radius: 22px;
       color: white;
       text-align: left;
-      cursor: pointer;
       box-shadow: 0 5px 14px rgba(0, 0, 0, 0.14);
-      transition:
-        transform 0.08s ease,
-        filter 0.08s ease;
     }
 
     .stat-button:active {
@@ -175,23 +162,23 @@
       filter: brightness(0.92);
     }
 
-    .stat-button.oreb {
+    .oreb {
       background: var(--oreb);
     }
 
-    .stat-button.dreb {
+    .dreb {
       background: var(--dreb);
     }
 
-    .stat-button.live-turnover {
+    .live-turnover {
       background: var(--live-turnover);
     }
 
-    .stat-button.dead-turnover {
+    .dead-turnover {
       background: var(--dead-turnover);
     }
 
-    .stat-button.opponent-oreb {
+    .opponent-oreb {
       background: var(--opponent-oreb);
     }
 
@@ -201,7 +188,6 @@
       font-size: clamp(18px, 3.5vw, 25px);
       font-weight: 900;
       line-height: 1.08;
-      letter-spacing: 0.01em;
       text-transform: uppercase;
     }
 
@@ -226,8 +212,6 @@
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.16);
       font-size: 53px;
-      font-weight: 500;
-      line-height: 1;
     }
 
     .game-actions {
@@ -240,31 +224,30 @@
     .action-button {
       min-height: 62px;
       padding: 10px;
-      border: 2px solid var(--light-border);
+      border: 2px solid var(--border);
       border-radius: 15px;
       background: white;
       color: var(--dark);
       font-size: 17px;
       font-weight: 850;
-      cursor: pointer;
     }
 
-    .next-quarter-button {
+    .next-quarter-button,
+    .save-game-button,
+    .copy-button {
       background: var(--dark);
       color: white;
       border-color: var(--dark);
     }
 
     .new-game-button {
-      grid-column: 1 / -1;
       color: #991b1b;
     }
 
     .current-quarter-message {
-      margin: 13px 0 0;
+      margin-top: 13px;
       text-align: center;
-      color: var(--muted-text);
-      font-size: 15px;
+      color: var(--muted);
       font-weight: 750;
     }
 
@@ -272,15 +255,8 @@
       margin-bottom: 24px;
     }
 
-    .summary-heading-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 0 0 10px;
-    }
-
     .summary-heading {
-      margin: 0;
+      margin: 0 0 10px;
       font-size: 24px;
       font-weight: 900;
     }
@@ -298,26 +274,6 @@
       color: white;
     }
 
-    .summary-card.oreb {
-      background: var(--oreb);
-    }
-
-    .summary-card.dreb {
-      background: var(--dreb);
-    }
-
-    .summary-card.live-turnover {
-      background: var(--live-turnover);
-    }
-
-    .summary-card.dead-turnover {
-      background: var(--dead-turnover);
-    }
-
-    .summary-card.opponent-oreb {
-      background: var(--opponent-oreb);
-    }
-
     .summary-label {
       min-height: 38px;
       font-size: 14px;
@@ -331,25 +287,24 @@
       margin-top: 4px;
       font-size: 36px;
       font-weight: 950;
-      line-height: 1;
     }
 
     .summary-actions {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-bottom: 22px;
     }
 
-    .copy-button {
+    .summary-actions button {
       min-height: 60px;
-      border: 0;
       border-radius: 15px;
-      background: var(--dark);
-      color: white;
-      font-size: 17px;
       font-weight: 850;
-      cursor: pointer;
+    }
+
+    .save-game-button,
+    .copy-button {
+      border: 0;
     }
 
     .table-wrapper {
@@ -385,7 +340,75 @@
       font-weight: 850;
     }
 
-    .saved-message {
+    .saved-game {
+      margin-bottom: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 2px 9px rgba(0, 0, 0, 0.08);
+    }
+
+    .saved-game-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .saved-opponent {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .saved-meta {
+      margin: 4px 0 0;
+      color: var(--muted);
+    }
+
+    .saved-score {
+      font-size: 24px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .saved-game-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .saved-game-actions button {
+      min-height: 50px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      font-weight: 800;
+    }
+
+    .delete-button {
+      color: #991b1b;
+    }
+
+    .saved-details {
+      display: none;
+      margin-top: 16px;
+    }
+
+    .saved-details.visible {
+      display: block;
+    }
+
+    .empty-history {
+      padding: 28px;
+      border-radius: 18px;
+      background: white;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .toast {
       position: fixed;
       left: 50%;
       bottom: max(22px, env(safe-area-inset-bottom));
@@ -395,14 +418,13 @@
       border-radius: 30px;
       background: rgba(17, 24, 39, 0.94);
       color: white;
-      font-size: 15px;
       font-weight: 750;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
     }
 
-    .saved-message.visible {
+    .toast.visible {
       opacity: 1;
     }
 
@@ -427,7 +449,6 @@
 
       .stat-button {
         min-height: 230px;
-        padding: 15px;
         text-align: center;
       }
 
@@ -442,7 +463,6 @@
       }
 
       .stat-count {
-        margin-top: 14px;
         font-size: 64px;
       }
 
@@ -456,16 +476,15 @@
     }
 
     @media (max-width: 540px) {
-      .game-information {
+      .game-information,
+      .summary-actions,
+      .game-actions,
+      .saved-game-actions {
         grid-template-columns: 1fr;
       }
 
-      .game-actions {
+      .tabs {
         grid-template-columns: 1fr;
-      }
-
-      .new-game-button {
-        grid-column: auto;
       }
     }
   </style>
@@ -473,23 +492,20 @@
 
 <body>
   <main class="app">
-    <header class="app-header">
-      <h1 class="app-title">Lady Lancers Game Tracker</h1>
+    <h1 class="app-title">Lady Lancers Game Tracker</h1>
 
-      <p class="app-subtitle">
-        Tap the full colored button whenever the stat occurs.
-      </p>
-    </header>
+    <p class="app-subtitle">
+      Track the current game and save completed games permanently.
+    </p>
 
     <section class="game-information">
       <input
         id="opponent"
         type="text"
         placeholder="Opponent — for example, MMU"
-        aria-label="Opponent"
       />
 
-      <select id="quarter" aria-label="Current quarter">
+      <select id="quarter">
         <option value="1">Quarter 1</option>
         <option value="2">Quarter 2</option>
         <option value="3">Quarter 3</option>
@@ -497,21 +513,17 @@
       </select>
     </section>
 
-    <nav class="tabs" aria-label="Tracker screens">
-      <button
-        id="trackTabButton"
-        class="tab-button active"
-        type="button"
-      >
+    <nav class="tabs">
+      <button id="trackTab" class="tab-button active">
         🏀 Track
       </button>
 
-      <button
-        id="summaryTabButton"
-        class="tab-button"
-        type="button"
-      >
+      <button id="summaryTab" class="tab-button">
         📊 Summary
+      </button>
+
+      <button id="historyTab" class="tab-button">
+        💾 Saved Games
       </button>
     </nav>
 
@@ -519,18 +531,13 @@
       <div id="trackingGrid" class="tracking-grid"></div>
 
       <div class="game-actions">
-        <button
-          id="undoButton"
-          class="action-button"
-          type="button"
-        >
+        <button id="undoButton" class="action-button">
           Undo last tap
         </button>
 
         <button
           id="nextQuarterButton"
           class="action-button next-quarter-button"
-          type="button"
         >
           Next quarter
         </button>
@@ -538,7 +545,6 @@
         <button
           id="newGameButton"
           class="action-button new-game-button"
-          type="button"
         >
           Start new game
         </button>
@@ -552,43 +558,32 @@
 
     <section id="summaryScreen" class="screen">
       <div class="summary-actions">
-        <button
-          id="copyReportButton"
-          class="copy-button"
-          type="button"
-        >
-          Copy game report
+        <button id="saveGameButton" class="save-game-button">
+          Save completed game
+        </button>
+
+        <button id="copyReportButton" class="copy-button">
+          Copy current report
         </button>
       </div>
 
       <section class="summary-section">
-        <div class="summary-heading-row">
-          <h2 class="summary-heading">First Half</h2>
-        </div>
-
+        <h2 class="summary-heading">First Half</h2>
         <div id="firstHalfSummary" class="summary-grid"></div>
       </section>
 
       <section class="summary-section">
-        <div class="summary-heading-row">
-          <h2 class="summary-heading">Second Half</h2>
-        </div>
-
+        <h2 class="summary-heading">Second Half</h2>
         <div id="secondHalfSummary" class="summary-grid"></div>
       </section>
 
       <section class="summary-section">
-        <div class="summary-heading-row">
-          <h2 class="summary-heading">Game Totals</h2>
-        </div>
-
+        <h2 class="summary-heading">Game Totals</h2>
         <div id="gameSummary" class="summary-grid"></div>
       </section>
 
       <section class="summary-section">
-        <div class="summary-heading-row">
-          <h2 class="summary-heading">Quarter Breakdown</h2>
-        </div>
+        <h2 class="summary-heading">Quarter Breakdown</h2>
 
         <div class="table-wrapper">
           <table>
@@ -608,11 +603,13 @@
         </div>
       </section>
     </section>
+
+    <section id="historyScreen" class="screen">
+      <div id="savedGamesList"></div>
+    </section>
   </main>
 
-  <div id="savedMessage" class="saved-message">
-    Saved
-  </div>
+  <div id="toast" class="toast">Saved</div>
 
   <script>
     const statDefinitions = [
@@ -672,63 +669,70 @@
       };
     }
 
-    function loadGame() {
+    function loadCurrentGame() {
       try {
-        const savedGame = JSON.parse(
-          localStorage.getItem("ladyLancersGameTracker")
+        return (
+          JSON.parse(
+            localStorage.getItem("ladyLancersGameTracker")
+          ) || createNewGame()
         );
-
-        if (savedGame && savedGame.quarters) {
-          return savedGame;
-        }
-
-        const previousVersion = JSON.parse(
-          localStorage.getItem("basketballGameTracker")
-        );
-
-        if (previousVersion && previousVersion.quarters) {
-          return previousVersion;
-        }
-      } catch (error) {
-        console.error("Unable to load saved game.", error);
+      } catch {
+        return createNewGame();
       }
-
-      return createNewGame();
     }
 
-    let gameState = loadGame();
+    function loadSavedGames() {
+      try {
+        return (
+          JSON.parse(
+            localStorage.getItem("ladyLancersSavedGames")
+          ) || []
+        );
+      } catch {
+        return [];
+      }
+    }
 
-    function saveGame() {
+    let gameState = loadCurrentGame();
+    let savedGames = loadSavedGames();
+
+    function saveCurrentGame() {
       localStorage.setItem(
         "ladyLancersGameTracker",
         JSON.stringify(gameState)
       );
     }
 
-    function getQuarterStat(quarter, statKey) {
-      return Number(
-        gameState.quarters[quarter][statKey] || 0
+    function saveGameHistory() {
+      localStorage.setItem(
+        "ladyLancersSavedGames",
+        JSON.stringify(savedGames)
       );
     }
 
-    function getPeriodTotal(statKey, quarters) {
+    function quarterValue(game, quarter, statKey) {
+      return Number(
+        game.quarters[quarter][statKey] || 0
+      );
+    }
+
+    function periodTotal(game, statKey, quarters) {
       return quarters.reduce((total, quarter) => {
-        return total + getQuarterStat(quarter, statKey);
+        return total + quarterValue(game, quarter, statKey);
       }, 0);
     }
 
-    function showSavedMessage(message = "Saved") {
-      const savedMessage =
-        document.getElementById("savedMessage");
+    function showToast(message) {
+      const toast = document.getElementById("toast");
 
-      savedMessage.textContent = message;
-      savedMessage.classList.add("visible");
+      toast.textContent = message;
+      toast.classList.add("visible");
 
-      clearTimeout(showSavedMessage.timeout);
+      clearTimeout(showToast.timeout);
 
-      showSavedMessage.timeout = setTimeout(() => {
-        savedMessage.classList.remove("visible");
-      }, 1100);
+      showToast.timeout = setTimeout(() => {
+        toast.classList.remove("visible");
+      }, 1200);
     }
 
     function addStat(statKey) {
@@ -741,53 +745,45 @@
         statKey
       });
 
-      if (gameState.history.length > 300) {
-        gameState.history.shift();
-      }
-
-      saveGame();
+      saveCurrentGame();
       render();
-      showSavedMessage("+1 saved");
+      showToast("+1 saved");
     }
 
     function undoLastTap() {
-      const lastEntry = gameState.history.pop();
+      const last = gameState.history.pop();
 
-      if (!lastEntry) {
-        showSavedMessage("Nothing to undo");
+      if (!last) {
+        showToast("Nothing to undo");
         return;
       }
 
-      const currentValue =
-        gameState.quarters[lastEntry.quarter][
-          lastEntry.statKey
-        ];
+      gameState.quarters[last.quarter][last.statKey] =
+        Math.max(
+          0,
+          gameState.quarters[last.quarter][last.statKey] - 1
+        );
 
-      gameState.quarters[lastEntry.quarter][
-        lastEntry.statKey
-      ] = Math.max(0, currentValue - 1);
-
-      saveGame();
+      saveCurrentGame();
       render();
-      showSavedMessage("Last tap undone");
+      showToast("Last tap undone");
     }
 
     function moveToNextQuarter() {
       if (gameState.quarter >= 4) {
-        showSavedMessage("Already in Quarter 4");
+        showToast("Already in Quarter 4");
         return;
       }
 
       gameState.quarter += 1;
-
-      saveGame();
+      saveCurrentGame();
       render();
-      showSavedMessage(`Quarter ${gameState.quarter}`);
+      showToast(`Quarter ${gameState.quarter}`);
     }
 
     function startNewGame() {
       const confirmed = confirm(
-        "Clear the current game and start a new game?"
+        "Start a new game? Make sure the current game has been saved first."
       );
 
       if (!confirmed) {
@@ -795,17 +791,104 @@
       }
 
       gameState = createNewGame();
-
-      saveGame();
+      saveCurrentGame();
       render();
-      showSavedMessage("New game started");
+      showScreen("track");
+      showToast("New game started");
+    }
+
+    function saveCompletedGame() {
+      const opponent =
+        gameState.opponent.trim() ||
+        prompt("Who was the opponent?");
+
+      if (!opponent) {
+        return;
+      }
+
+      const ourScore = prompt(
+        "Enter the Lady Lancers' final score:"
+      );
+
+      if (ourScore === null) {
+        return;
+      }
+
+      const opponentScore = prompt(
+        `Enter ${opponent}'s final score:`
+      );
+
+      if (opponentScore === null) {
+        return;
+      }
+
+      const savedGame = {
+        id: Date.now(),
+        opponent,
+        date: new Date().toLocaleDateString(),
+        ourScore: ourScore.trim(),
+        opponentScore: opponentScore.trim(),
+        quarters: JSON.parse(
+          JSON.stringify(gameState.quarters)
+        )
+      };
+
+      savedGames.unshift(savedGame);
+      saveGameHistory();
+      renderSavedGames();
+      showToast("Game saved");
+
+      showScreen("history");
+    }
+
+    function createSummaryCards(game, quarters) {
+      return statDefinitions
+        .map((stat) => {
+          const total = periodTotal(
+            game,
+            stat.key,
+            quarters
+          );
+
+          return `
+            <article class="summary-card ${stat.className}">
+              <div class="summary-label">
+                ${stat.shortName}
+              </div>
+
+              <span class="summary-value">
+                ${total}
+              </span>
+            </article>
+          `;
+        })
+        .join("");
+    }
+
+    function createQuarterTable(game) {
+      return [1, 2, 3, 4]
+        .map((quarter) => {
+          const stats = game.quarters[quarter];
+
+          return `
+            <tr>
+              <td>Q${quarter}</td>
+              <td>${stats.oreb}</td>
+              <td>${stats.dreb}</td>
+              <td>${stats.liveTurnovers}</td>
+              <td>${stats.deadTurnovers}</td>
+              <td>${stats.opponentOreb}</td>
+            </tr>
+          `;
+        })
+        .join("");
     }
 
     function renderTrackingButtons() {
-      const trackingGrid =
+      const grid =
         document.getElementById("trackingGrid");
 
-      trackingGrid.innerHTML = statDefinitions
+      grid.innerHTML = statDefinitions
         .map((stat) => {
           const count =
             gameState.quarters[gameState.quarter][stat.key];
@@ -813,9 +896,7 @@
           return `
             <button
               class="stat-button ${stat.className}"
-              type="button"
               data-stat-key="${stat.key}"
-              aria-label="Add one ${stat.name}"
             >
               <span class="stat-name">
                 ${stat.name}
@@ -842,178 +923,281 @@
         });
     }
 
-    function createSummaryCards(quarters) {
-      return statDefinitions
-        .map((stat) => {
-          const total = getPeriodTotal(
-            stat.key,
-            quarters
-          );
+    function renderCurrentSummary() {
+      document.getElementById(
+        "firstHalfSummary"
+      ).innerHTML = createSummaryCards(
+        gameState,
+        [1, 2]
+      );
 
+      document.getElementById(
+        "secondHalfSummary"
+      ).innerHTML = createSummaryCards(
+        gameState,
+        [3, 4]
+      );
+
+      document.getElementById(
+        "gameSummary"
+      ).innerHTML = createSummaryCards(
+        gameState,
+        [1, 2, 3, 4]
+      );
+
+      document.getElementById(
+        "quarterTable"
+      ).innerHTML = createQuarterTable(gameState);
+    }
+
+    function createReportText(game) {
+      const opponent = game.opponent || "Opponent";
+
+      return [
+        `Lady Lancers vs ${opponent}`,
+        "",
+        "FIRST HALF",
+        `OREB: ${periodTotal(game, "oreb", [1, 2])}`,
+        `DREB: ${periodTotal(game, "dreb", [1, 2])}`,
+        `Live TO: ${periodTotal(
+          game,
+          "liveTurnovers",
+          [1, 2]
+        )}`,
+        `Dead TO: ${periodTotal(
+          game,
+          "deadTurnovers",
+          [1, 2]
+        )}`,
+        `Opponent OREB: ${periodTotal(
+          game,
+          "opponentOreb",
+          [1, 2]
+        )}`,
+        "",
+        "SECOND HALF",
+        `OREB: ${periodTotal(game, "oreb", [3, 4])}`,
+        `DREB: ${periodTotal(game, "dreb", [3, 4])}`,
+        `Live TO: ${periodTotal(
+          game,
+          "liveTurnovers",
+          [3, 4]
+        )}`,
+        `Dead TO: ${periodTotal(
+          game,
+          "deadTurnovers",
+          [3, 4]
+        )}`,
+        `Opponent OREB: ${periodTotal(
+          game,
+          "opponentOreb",
+          [3, 4]
+        )}`,
+        "",
+        "GAME TOTALS",
+        `OREB: ${periodTotal(
+          game,
+          "oreb",
+          [1, 2, 3, 4]
+        )}`,
+        `DREB: ${periodTotal(
+          game,
+          "dreb",
+          [1, 2, 3, 4]
+        )}`,
+        `Live TO: ${periodTotal(
+          game,
+          "liveTurnovers",
+          [1, 2, 3, 4]
+        )}`,
+        `Dead TO: ${periodTotal(
+          game,
+          "deadTurnovers",
+          [1, 2, 3, 4]
+        )}`,
+        `Opponent OREB: ${periodTotal(
+          game,
+          "opponentOreb",
+          [1, 2, 3, 4]
+        )}`
+      ].join("\n");
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Report copied");
+      } catch {
+        window.prompt("Copy this report:", text);
+      }
+    }
+
+    function toggleSavedDetails(id) {
+      const details =
+        document.getElementById(`details-${id}`);
+
+      details.classList.toggle("visible");
+    }
+
+    function deleteSavedGame(id) {
+      const confirmed = confirm(
+        "Permanently delete this saved game?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      savedGames = savedGames.filter(
+        (game) => game.id !== id
+      );
+
+      saveGameHistory();
+      renderSavedGames();
+      showToast("Game deleted");
+    }
+
+    function renderSavedGames() {
+      const list =
+        document.getElementById("savedGamesList");
+
+      if (savedGames.length === 0) {
+        list.innerHTML = `
+          <div class="empty-history">
+            No games have been saved yet.
+          </div>
+        `;
+
+        return;
+      }
+
+      list.innerHTML = savedGames
+        .map((game) => {
           return `
-            <article
-              class="summary-card ${stat.className}"
-            >
-              <div class="summary-label">
-                ${stat.shortName}
+            <article class="saved-game">
+              <div class="saved-game-header">
+                <div>
+                  <h2 class="saved-opponent">
+                    Lady Lancers vs ${game.opponent}
+                  </h2>
+
+                  <p class="saved-meta">
+                    ${game.date}
+                  </p>
+                </div>
+
+                <div class="saved-score">
+                  ${game.ourScore}–${game.opponentScore}
+                </div>
               </div>
 
-              <span class="summary-value">
-                ${total}
-              </span>
+              <div class="saved-game-actions">
+                <button
+                  onclick="toggleSavedDetails(${game.id})"
+                >
+                  View stats
+                </button>
+
+                <button
+                  onclick="copyText(
+                    createReportText(
+                      savedGames.find(
+                        game => game.id === ${game.id}
+                      )
+                    )
+                  )"
+                >
+                  Copy report
+                </button>
+
+                <button
+                  class="delete-button"
+                  onclick="deleteSavedGame(${game.id})"
+                >
+                  Delete
+                </button>
+              </div>
+
+              <div
+                id="details-${game.id}"
+                class="saved-details"
+              >
+                <h3>First Half</h3>
+
+                <div class="summary-grid">
+                  ${createSummaryCards(game, [1, 2])}
+                </div>
+
+                <h3>Second Half</h3>
+
+                <div class="summary-grid">
+                  ${createSummaryCards(game, [3, 4])}
+                </div>
+
+                <h3>Game Totals</h3>
+
+                <div class="summary-grid">
+                  ${createSummaryCards(
+                    game,
+                    [1, 2, 3, 4]
+                  )}
+                </div>
+
+                <h3>Quarter Breakdown</h3>
+
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Quarter</th>
+                        <th>OREB</th>
+                        <th>DREB</th>
+                        <th>Live TO</th>
+                        <th>Dead TO</th>
+                        <th>Opp OREB</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      ${createQuarterTable(game)}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </article>
           `;
         })
         .join("");
     }
 
-    function renderSummaries() {
-      document.getElementById(
-        "firstHalfSummary"
-      ).innerHTML = createSummaryCards([1, 2]);
+    function showScreen(name) {
+      const screens = {
+        track: document.getElementById("trackScreen"),
+        summary: document.getElementById("summaryScreen"),
+        history: document.getElementById("historyScreen")
+      };
 
-      document.getElementById(
-        "secondHalfSummary"
-      ).innerHTML = createSummaryCards([3, 4]);
+      const tabs = {
+        track: document.getElementById("trackTab"),
+        summary: document.getElementById("summaryTab"),
+        history: document.getElementById("historyTab")
+      };
 
-      document.getElementById(
-        "gameSummary"
-      ).innerHTML = createSummaryCards([1, 2, 3, 4]);
-    }
-
-    function renderQuarterTable() {
-      document.getElementById("quarterTable").innerHTML =
-        [1, 2, 3, 4]
-          .map((quarter) => {
-            const stats = gameState.quarters[quarter];
-
-            return `
-              <tr>
-                <td>Q${quarter}</td>
-                <td>${stats.oreb}</td>
-                <td>${stats.dreb}</td>
-                <td>${stats.liveTurnovers}</td>
-                <td>${stats.deadTurnovers}</td>
-                <td>${stats.opponentOreb}</td>
-              </tr>
-            `;
-          })
-          .join("");
-    }
-
-    function createReportText() {
-      const opponent =
-        gameState.opponent.trim() || "Opponent";
-
-      const lines = [
-        `Lady Lancers vs ${opponent}`,
-        "",
-        "FIRST HALF",
-        `OREB: ${getPeriodTotal("oreb", [1, 2])}`,
-        `DREB: ${getPeriodTotal("dreb", [1, 2])}`,
-        `Live TO: ${getPeriodTotal(
-          "liveTurnovers",
-          [1, 2]
-        )}`,
-        `Dead TO: ${getPeriodTotal(
-          "deadTurnovers",
-          [1, 2]
-        )}`,
-        `Opponent OREB: ${getPeriodTotal(
-          "opponentOreb",
-          [1, 2]
-        )}`,
-        "",
-        "SECOND HALF",
-        `OREB: ${getPeriodTotal("oreb", [3, 4])}`,
-        `DREB: ${getPeriodTotal("dreb", [3, 4])}`,
-        `Live TO: ${getPeriodTotal(
-          "liveTurnovers",
-          [3, 4]
-        )}`,
-        `Dead TO: ${getPeriodTotal(
-          "deadTurnovers",
-          [3, 4]
-        )}`,
-        `Opponent OREB: ${getPeriodTotal(
-          "opponentOreb",
-          [3, 4]
-        )}`,
-        "",
-        "GAME TOTALS",
-        `OREB: ${getPeriodTotal(
-          "oreb",
-          [1, 2, 3, 4]
-        )}`,
-        `DREB: ${getPeriodTotal(
-          "dreb",
-          [1, 2, 3, 4]
-        )}`,
-        `Live TO: ${getPeriodTotal(
-          "liveTurnovers",
-          [1, 2, 3, 4]
-        )}`,
-        `Dead TO: ${getPeriodTotal(
-          "deadTurnovers",
-          [1, 2, 3, 4]
-        )}`,
-        `Opponent OREB: ${getPeriodTotal(
-          "opponentOreb",
-          [1, 2, 3, 4]
-        )}`
-      ];
-
-      return lines.join("\n");
-    }
-
-    async function copyReport() {
-      const report = createReportText();
-
-      try {
-        await navigator.clipboard.writeText(report);
-        showSavedMessage("Report copied");
-      } catch (error) {
-        window.prompt(
-          "Copy this report:",
-          report
+      Object.keys(screens).forEach((key) => {
+        screens[key].classList.toggle(
+          "active",
+          key === name
         );
+
+        tabs[key].classList.toggle(
+          "active",
+          key === name
+        );
+      });
+
+      if (name === "history") {
+        renderSavedGames();
       }
-    }
-
-    function showScreen(screenName) {
-      const trackScreen =
-        document.getElementById("trackScreen");
-
-      const summaryScreen =
-        document.getElementById("summaryScreen");
-
-      const trackTabButton =
-        document.getElementById("trackTabButton");
-
-      const summaryTabButton =
-        document.getElementById("summaryTabButton");
-
-      const showingTrack = screenName === "track";
-
-      trackScreen.classList.toggle(
-        "active",
-        showingTrack
-      );
-
-      summaryScreen.classList.toggle(
-        "active",
-        !showingTrack
-      );
-
-      trackTabButton.classList.toggle(
-        "active",
-        showingTrack
-      );
-
-      summaryTabButton.classList.toggle(
-        "active",
-        !showingTrack
-      );
     }
 
     function render() {
@@ -1029,35 +1213,41 @@
         `Currently tracking Quarter ${gameState.quarter}`;
 
       renderTrackingButtons();
-      renderSummaries();
-      renderQuarterTable();
+      renderCurrentSummary();
+      renderSavedGames();
     }
 
     document
       .getElementById("opponent")
       .addEventListener("input", (event) => {
         gameState.opponent = event.target.value;
-        saveGame();
+        saveCurrentGame();
       });
 
     document
       .getElementById("quarter")
       .addEventListener("change", (event) => {
         gameState.quarter = Number(event.target.value);
-        saveGame();
+        saveCurrentGame();
         render();
       });
 
     document
-      .getElementById("trackTabButton")
+      .getElementById("trackTab")
       .addEventListener("click", () => {
         showScreen("track");
       });
 
     document
-      .getElementById("summaryTabButton")
+      .getElementById("summaryTab")
       .addEventListener("click", () => {
         showScreen("summary");
+      });
+
+    document
+      .getElementById("historyTab")
+      .addEventListener("click", () => {
+        showScreen("history");
       });
 
     document
@@ -1073,19 +1263,20 @@
       .addEventListener("click", startNewGame);
 
     document
+      .getElementById("saveGameButton")
+      .addEventListener("click", saveCompletedGame);
+
+    document
       .getElementById("copyReportButton")
-      .addEventListener("click", copyReport);
+      .addEventListener("click", () => {
+        copyText(createReportText(gameState));
+      });
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("./service-worker.js")
-          .catch((error) => {
-            console.error(
-              "Service worker registration failed.",
-              error
-            );
-          });
+        navigator.serviceWorker.register(
+          "./service-worker.js"
+        );
       });
     }
 
