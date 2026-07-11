@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#111827" />
+
+  <title>Basketball Game Tracker</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      color: #4b5563;
+      margin-bottom: 16px;
+    }
+
+    .game-info {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    input,
+    select,
+    button {
+      font: inherit;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 52px;
+      padding: 10px 12px;
+      border: 2px solid #d1d5db;
+      border-radius: 12px;
+      background: white;
+      font-size: 18px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 18px;
+      padding: 14px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-label {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .count {
+      font-size: 58px;
+      line-height: 1;
+      font-weight: 900;
+      margin: 10px 0 14px;
+    }
+
+    .counter-buttons {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 8px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      min-height: 60px;
+      font-weight: bold;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .minus-button {
+      background: #e5e7eb;
+      color: #111827;
+      font-size: 28px;
+    }
+
+    .plus-button {
+      background: #111827;
+      color: white;
+      font-size: 34px;
+    }
+
+    .main-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .action-button {
+      background: white;
+      border: 2px solid #d1d5db;
+    }
+
+    .new-game-button {
+      color: #991b1b;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .summary-card {
+      background: #111827;
+      color: white;
+      border-radius: 15px;
+      padding: 13px;
+    }
+
+    .summary-label {
+      font-size: 14px;
+      opacity: 0.75;
+    }
+
+    .summary-value {
+      display: block;
+      font-size: 30px;
+      font-weight: 900;
+      margin-top: 3px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 600px;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      padding: 10px 6px;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+      padding-left: 12px;
+    }
+
+    .note {
+      margin-top: 10px;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    @media (min-width: 760px) {
+      .stat-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .game-info {
+        grid-template-columns: 1fr;
+      }
+
+      .main-actions {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>Basketball Game Tracker</h1>
+
+    <div class="subtitle">
+      Tap the large plus button whenever a stat occurs.
+    </div>
+
+    <div class="game-info">
+      <input
+        id="opponent"
+        type="text"
+        placeholder="Opponent — for example, MMU"
+      />
+
+      <select id="quarter">
+        <option value="1">Quarter 1</option>
+        <option value="2">Quarter 2</option>
+        <option value="3">Quarter 3</option>
+        <option value="4">Quarter 4</option>
+      </select>
+    </div>
+
+    <section id="statGrid" class="stat-grid"></section>
+
+    <div class="main-actions">
+      <button id="nextQuarter" class="action-button">
+        Next quarter
+      </button>
+
+      <button id="undoButton" class="action-button">
+        Undo last tap
+      </button>
+
+      <button id="newGameButton" class="action-button new-game-button">
+        New game
+      </button>
+    </div>
+
+    <section class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-label">Our offensive rebounds</div>
+        <span id="totalOreb" class="summary-value">0</span>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-label">Our defensive rebounds</div>
+        <span id="totalDreb" class="summary-value">0</span>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-label">Total turnovers</div>
+        <span id="totalTurnovers" class="summary-value">0</span>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-label">Opponent offensive rebounds</div>
+        <span id="totalOpponentOreb" class="summary-value">0</span>
+      </div>
+    </section>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Quarter</th>
+            <th>OREB</th>
+            <th>DREB</th>
+            <th>Live TO</th>
+            <th>Dead TO</th>
+            <th>Opp OREB</th>
+          </tr>
+        </thead>
+
+        <tbody id="quarterTable"></tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      Your numbers save automatically in the browser on the device you are using.
+    </div>
+  </main>
+
+  <script>
+    const statDefinitions = [
+      {
+        key: "oreb",
+        label: "Our offensive rebounds"
+      },
+      {
+        key: "dreb",
+        label: "Our defensive rebounds"
+      },
+      {
+        key: "liveTurnovers",
+        label: "Live-ball turnovers"
+      },
+      {
+        key: "deadTurnovers",
+        label: "Dead-ball turnovers"
+      },
+      {
+        key: "opponentOreb",
+        label: "Opponent offensive rebounds"
+      }
+    ];
+
+    function createNewGame() {
+      return {
+        opponent: "",
+        quarter: 1,
+        history: [],
+        quarters: {
+          1: {
+            oreb: 0,
+            dreb: 0,
+            liveTurnovers: 0,
+            deadTurnovers: 0,
+            opponentOreb: 0
+          },
+          2: {
+            oreb: 0,
+            dreb: 0,
+            liveTurnovers: 0,
+            deadTurnovers: 0,
+            opponentOreb: 0
+          },
+          3: {
+            oreb: 0,
+            dreb: 0,
+            liveTurnovers: 0,
+            deadTurnovers: 0,
+            opponentOreb: 0
+          },
+          4: {
+            oreb: 0,
+            dreb: 0,
+            liveTurnovers: 0,
+            deadTurnovers: 0,
+            opponentOreb: 0
+          }
+        }
+      };
+    }
+
+    let gameState;
+
+    try {
+      gameState =
+        JSON.parse(localStorage.getItem("basketballGameTracker")) ||
+        createNewGame();
+    } catch {
+      gameState = createNewGame();
+    }
+
+    function saveGame() {
+      localStorage.setItem(
+        "basketballGameTracker",
+        JSON.stringify(gameState)
+      );
+    }
+
+    function getTotal(statKey) {
+      return [1, 2, 3, 4].reduce((total, quarter) => {
+        return total + gameState.quarters[quarter][statKey];
+      }, 0);
+    }
+
+    function changeStat(statKey, amount) {
+      const quarter = gameState.quarter;
+
+      if (amount > 0) {
+        gameState.history.push({
+          quarter: quarter,
+          statKey: statKey
+        });
+      }
+
+      gameState.quarters[quarter][statKey] = Math.max(
+        0,
+        gameState.quarters[quarter][statKey] + amount
+      );
+
+      saveGame();
+      render();
+    }
+
+    function undoLastTap() {
+      const lastEntry = gameState.history.pop();
+
+      if (!lastEntry) {
+        return;
+      }
+
+      const quarter = lastEntry.quarter;
+      const statKey = lastEntry.statKey;
+
+      gameState.quarters[quarter][statKey] = Math.max(
+        0,
+        gameState.quarters[quarter][statKey] - 1
+      );
+
+      saveGame();
+      render();
+    }
+
+    function renderStatCards() {
+      const statGrid = document.getElementById("statGrid");
+      const currentQuarter = gameState.quarter;
+
+      statGrid.innerHTML = statDefinitions
+        .map((stat) => {
+          const currentCount =
+            gameState.quarters[currentQuarter][stat.key];
+
+          return `
+            <article class="stat-card">
+              <div class="stat-label">${stat.label}</div>
+
+              <div class="count">${currentCount}</div>
+
+              <div class="counter-buttons">
+                <button
+                  class="minus-button"
+                  data-stat="${stat.key}"
+                  data-change="-1"
+                  aria-label="Subtract one ${stat.label}"
+                >
+                  −
+                </button>
+
+                <button
+                  class="plus-button"
+                  data-stat="${stat.key}"
+                  data-change="1"
+                  aria-label="Add one ${stat.label}"
+                >
+                  +
+                </button>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+
+      document
+        .querySelectorAll("[data-stat]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            const statKey = button.dataset.stat;
+            const amount = Number(button.dataset.change);
+
+            changeStat(statKey, amount);
+          });
+        });
+    }
+
+    function renderTotals() {
+      document.getElementById("totalOreb").textContent =
+        getTotal("oreb");
+
+      document.getElementById("totalDreb").textContent =
+        getTotal("dreb");
+
+      document.getElementById("totalTurnovers").textContent =
+        getTotal("liveTurnovers") +
+        getTotal("deadTurnovers");
+
+      document.getElementById("totalOpponentOreb").textContent =
+        getTotal("opponentOreb");
+    }
+
+    function renderQuarterTable() {
+      const table = document.getElementById("quarterTable");
+
+      table.innerHTML = [1, 2, 3, 4]
+        .map((quarter) => {
+          const stats = gameState.quarters[quarter];
+
+          return `
+            <tr>
+              <td>Q${quarter}</td>
+              <td>${stats.oreb}</td>
+              <td>${stats.dreb}</td>
+              <td>${stats.liveTurnovers}</td>
+              <td>${stats.deadTurnovers}</td>
+              <td>${stats.opponentOreb}</td>
+            </tr>
+          `;
+        })
+        .join("");
+    }
+
+    function render() {
+      document.getElementById("opponent").value =
+        gameState.opponent;
+
+      document.getElementById("quarter").value =
+        String(gameState.quarter);
+
+      renderStatCards();
+      renderTotals();
+      renderQuarterTable();
+    }
+
+    document
+      .getElementById("opponent")
+      .addEventListener("input", (event) => {
+        gameState.opponent = event.target.value;
+        saveGame();
+      });
+
+    document
+      .getElementById("quarter")
+      .addEventListener("change", (event) => {
+        gameState.quarter = Number(event.target.value);
+        saveGame();
+        render();
+      });
+
+    document
+      .getElementById("nextQuarter")
+      .addEventListener("click", () => {
+        gameState.quarter = Math.min(
+          4,
+          gameState.quarter + 1
+        );
+
+        saveGame();
+        render();
+      });
+
+    document
+      .getElementById("undoButton")
+      .addEventListener("click", undoLastTap);
+
+    document
+      .getElementById("newGameButton")
+      .addEventListener("click", () => {
+        const confirmed = confirm(
+          "Clear all statistics and start a new game?"
+        );
+
+        if (confirmed) {
+          gameState = createNewGame();
+          saveGame();
+          render();
+        }
+      });
+
+    render();
+  </script>
+</body>
+</html>
