@@ -2,136 +2,287 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  />
+
   <meta name="theme-color" content="#111827" />
 
-  <title>Basketball Game Tracker</title>
+  <link rel="manifest" href="./manifest.json" />
+
+  <title>Lady Lancers Game Tracker</title>
 
   <style>
+    :root {
+      --page-background: #eef1f5;
+      --dark: #111827;
+      --light-border: #d1d5db;
+      --muted-text: #6b7280;
+
+      --oreb: #15803d;
+      --dreb: #1d4ed8;
+      --live-turnover: #d97706;
+      --dead-turnover: #4b5563;
+      --opponent-oreb: #b91c1c;
+    }
+
     * {
       box-sizing: border-box;
     }
 
+    html {
+      -webkit-tap-highlight-color: transparent;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f3f4f6;
-      color: #111827;
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      background: var(--page-background);
+      color: var(--dark);
     }
 
-    .container {
-      max-width: 1000px;
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      touch-action: manipulation;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1050px;
+      min-height: 100vh;
       margin: 0 auto;
-      padding: 18px;
+      padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(30px, env(safe-area-inset-bottom));
     }
 
-    h1 {
-      margin: 0 0 6px;
-      font-size: 32px;
+    .app-header {
+      margin-bottom: 14px;
     }
 
-    .subtitle {
-      color: #4b5563;
-      margin-bottom: 16px;
+    .app-title {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
     }
 
-    .game-info {
+    .app-subtitle {
+      margin: 4px 0 0;
+      color: var(--muted-text);
+      font-size: 16px;
+    }
+
+    .game-information {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 10px;
       margin-bottom: 14px;
     }
 
-    input,
-    select,
-    button {
-      font: inherit;
-    }
-
-    input,
-    select {
+    .game-information input,
+    .game-information select {
       width: 100%;
-      min-height: 52px;
-      padding: 10px 12px;
-      border: 2px solid #d1d5db;
-      border-radius: 12px;
-      background: white;
-      font-size: 18px;
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .stat-card {
-      background: white;
-      border-radius: 18px;
-      padding: 14px;
-      text-align: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    }
-
-    .stat-label {
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      font-weight: bold;
-    }
-
-    .count {
-      font-size: 58px;
-      line-height: 1;
-      font-weight: 900;
-      margin: 10px 0 14px;
-    }
-
-    .counter-buttons {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 8px;
-    }
-
-    button {
-      border: none;
+      min-height: 56px;
+      padding: 10px 13px;
+      border: 2px solid var(--light-border);
       border-radius: 14px;
-      min-height: 60px;
-      font-weight: bold;
-      cursor: pointer;
-      touch-action: manipulation;
+      background: white;
+      color: var(--dark);
+      font-size: 18px;
+      font-weight: 700;
     }
 
-    .minus-button {
-      background: #e5e7eb;
-      color: #111827;
-      font-size: 28px;
-    }
-
-    .plus-button {
-      background: #111827;
-      color: white;
-      font-size: 34px;
-    }
-
-    .main-actions {
+    .tabs {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin: 16px 0;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 5px;
+      margin-bottom: 16px;
+      border-radius: 16px;
+      background: #dfe3e8;
+    }
+
+    .tab-button {
+      min-height: 54px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: #4b5563;
+      font-size: 18px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      background: white;
+      color: var(--dark);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .tracking-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 13px;
+    }
+
+    .stat-button {
+      position: relative;
+      width: 100%;
+      min-height: 132px;
+      padding: 16px;
+      border: 0;
+      border-radius: 22px;
+      color: white;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.14);
+      transition:
+        transform 0.08s ease,
+        filter 0.08s ease;
+    }
+
+    .stat-button:active {
+      transform: scale(0.985);
+      filter: brightness(0.92);
+    }
+
+    .stat-button.oreb {
+      background: var(--oreb);
+    }
+
+    .stat-button.dreb {
+      background: var(--dreb);
+    }
+
+    .stat-button.live-turnover {
+      background: var(--live-turnover);
+    }
+
+    .stat-button.dead-turnover {
+      background: var(--dead-turnover);
+    }
+
+    .stat-button.opponent-oreb {
+      background: var(--opponent-oreb);
+    }
+
+    .stat-name {
+      display: block;
+      max-width: 72%;
+      font-size: clamp(18px, 3.5vw, 25px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+    }
+
+    .stat-count {
+      display: block;
+      margin-top: 9px;
+      font-size: clamp(42px, 9vw, 70px);
+      font-weight: 950;
+      line-height: 0.95;
+    }
+
+    .plus-symbol {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      display: grid;
+      width: 72px;
+      height: 72px;
+      place-items: center;
+      transform: translateY(-50%);
+      border: 3px solid rgba(255, 255, 255, 0.75);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 53px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .game-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
     }
 
     .action-button {
+      min-height: 62px;
+      padding: 10px;
+      border: 2px solid var(--light-border);
+      border-radius: 15px;
       background: white;
-      border: 2px solid #d1d5db;
+      color: var(--dark);
+      font-size: 17px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .next-quarter-button {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
     }
 
     .new-game-button {
+      grid-column: 1 / -1;
       color: #991b1b;
+    }
+
+    .current-quarter-message {
+      margin: 13px 0 0;
+      text-align: center;
+      color: var(--muted-text);
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .summary-section {
+      margin-bottom: 24px;
+    }
+
+    .summary-heading-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 10px;
+    }
+
+    .summary-heading {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 900;
     }
 
     .summary-grid {
@@ -141,189 +292,371 @@
     }
 
     .summary-card {
-      background: #111827;
-      color: white;
-      border-radius: 15px;
+      min-height: 104px;
       padding: 13px;
+      border-radius: 17px;
+      color: white;
+    }
+
+    .summary-card.oreb {
+      background: var(--oreb);
+    }
+
+    .summary-card.dreb {
+      background: var(--dreb);
+    }
+
+    .summary-card.live-turnover {
+      background: var(--live-turnover);
+    }
+
+    .summary-card.dead-turnover {
+      background: var(--dead-turnover);
+    }
+
+    .summary-card.opponent-oreb {
+      background: var(--opponent-oreb);
     }
 
     .summary-label {
+      min-height: 38px;
       font-size: 14px;
-      opacity: 0.75;
+      font-weight: 800;
+      line-height: 1.15;
+      text-transform: uppercase;
     }
 
     .summary-value {
       display: block;
-      font-size: 30px;
-      font-weight: 900;
-      margin-top: 3px;
+      margin-top: 4px;
+      font-size: 36px;
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    .summary-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .copy-button {
+      min-height: 60px;
+      border: 0;
+      border-radius: 15px;
+      background: var(--dark);
+      color: white;
+      font-size: 17px;
+      font-weight: 850;
+      cursor: pointer;
     }
 
     .table-wrapper {
       overflow-x: auto;
-      margin-top: 16px;
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 2px 9px rgba(0, 0, 0, 0.07);
     }
 
     table {
       width: 100%;
-      min-width: 600px;
+      min-width: 650px;
       border-collapse: collapse;
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
     }
 
     th,
     td {
-      padding: 10px 6px;
-      text-align: center;
+      padding: 13px 8px;
       border-bottom: 1px solid #e5e7eb;
+      text-align: center;
+    }
+
+    th {
+      background: #f8fafc;
+      font-size: 13px;
+      text-transform: uppercase;
     }
 
     th:first-child,
     td:first-child {
+      padding-left: 14px;
       text-align: left;
-      padding-left: 12px;
+      font-weight: 850;
     }
 
-    .note {
-      margin-top: 10px;
-      color: #6b7280;
-      font-size: 13px;
+    .saved-message {
+      position: fixed;
+      left: 50%;
+      bottom: max(22px, env(safe-area-inset-bottom));
+      z-index: 20;
+      padding: 11px 18px;
+      transform: translateX(-50%);
+      border-radius: 30px;
+      background: rgba(17, 24, 39, 0.94);
+      color: white;
+      font-size: 15px;
+      font-weight: 750;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
     }
 
-    @media (min-width: 760px) {
-      .stat-grid {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+    .saved-message.visible {
+      opacity: 1;
+    }
+
+    @media (min-width: 720px) {
+      .tracking-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stat-button:last-child {
+        grid-column: 1 / -1;
       }
 
       .summary-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 520px) {
-      .game-info {
+    @media (min-width: 950px) {
+      .tracking-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .stat-button {
+        min-height: 230px;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .stat-button:last-child {
+        grid-column: auto;
+      }
+
+      .stat-name {
+        max-width: none;
+        min-height: 60px;
+        font-size: 18px;
+      }
+
+      .stat-count {
+        margin-top: 14px;
+        font-size: 64px;
+      }
+
+      .plus-symbol {
+        position: static;
+        width: 78px;
+        height: 78px;
+        margin: 18px auto 0;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .game-information {
         grid-template-columns: 1fr;
       }
 
-      .main-actions {
+      .game-actions {
         grid-template-columns: 1fr;
       }
 
-      h1 {
-        font-size: 27px;
+      .new-game-button {
+        grid-column: auto;
       }
     }
   </style>
 </head>
 
 <body>
-  <main class="container">
-    <h1>Basketball Game Tracker</h1>
+  <main class="app">
+    <header class="app-header">
+      <h1 class="app-title">Lady Lancers Game Tracker</h1>
 
-    <div class="subtitle">
-      Tap the large plus button whenever a stat occurs.
-    </div>
+      <p class="app-subtitle">
+        Tap the full colored button whenever the stat occurs.
+      </p>
+    </header>
 
-    <div class="game-info">
+    <section class="game-information">
       <input
         id="opponent"
         type="text"
         placeholder="Opponent — for example, MMU"
+        aria-label="Opponent"
       />
 
-      <select id="quarter">
+      <select id="quarter" aria-label="Current quarter">
         <option value="1">Quarter 1</option>
         <option value="2">Quarter 2</option>
         <option value="3">Quarter 3</option>
         <option value="4">Quarter 4</option>
       </select>
-    </div>
-
-    <section id="statGrid" class="stat-grid"></section>
-
-    <div class="main-actions">
-      <button id="nextQuarter" class="action-button">
-        Next quarter
-      </button>
-
-      <button id="undoButton" class="action-button">
-        Undo last tap
-      </button>
-
-      <button id="newGameButton" class="action-button new-game-button">
-        New game
-      </button>
-    </div>
-
-    <section class="summary-grid">
-      <div class="summary-card">
-        <div class="summary-label">Our offensive rebounds</div>
-        <span id="totalOreb" class="summary-value">0</span>
-      </div>
-
-      <div class="summary-card">
-        <div class="summary-label">Our defensive rebounds</div>
-        <span id="totalDreb" class="summary-value">0</span>
-      </div>
-
-      <div class="summary-card">
-        <div class="summary-label">Total turnovers</div>
-        <span id="totalTurnovers" class="summary-value">0</span>
-      </div>
-
-      <div class="summary-card">
-        <div class="summary-label">Opponent offensive rebounds</div>
-        <span id="totalOpponentOreb" class="summary-value">0</span>
-      </div>
     </section>
 
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Quarter</th>
-            <th>OREB</th>
-            <th>DREB</th>
-            <th>Live TO</th>
-            <th>Dead TO</th>
-            <th>Opp OREB</th>
-          </tr>
-        </thead>
+    <nav class="tabs" aria-label="Tracker screens">
+      <button
+        id="trackTabButton"
+        class="tab-button active"
+        type="button"
+      >
+        🏀 Track
+      </button>
 
-        <tbody id="quarterTable"></tbody>
-      </table>
-    </div>
+      <button
+        id="summaryTabButton"
+        class="tab-button"
+        type="button"
+      >
+        📊 Summary
+      </button>
+    </nav>
 
-    <div class="note">
-      Your numbers save automatically in the browser on the device you are using.
-    </div>
+    <section id="trackScreen" class="screen active">
+      <div id="trackingGrid" class="tracking-grid"></div>
+
+      <div class="game-actions">
+        <button
+          id="undoButton"
+          class="action-button"
+          type="button"
+        >
+          Undo last tap
+        </button>
+
+        <button
+          id="nextQuarterButton"
+          class="action-button next-quarter-button"
+          type="button"
+        >
+          Next quarter
+        </button>
+
+        <button
+          id="newGameButton"
+          class="action-button new-game-button"
+          type="button"
+        >
+          Start new game
+        </button>
+      </div>
+
+      <p
+        id="currentQuarterMessage"
+        class="current-quarter-message"
+      ></p>
+    </section>
+
+    <section id="summaryScreen" class="screen">
+      <div class="summary-actions">
+        <button
+          id="copyReportButton"
+          class="copy-button"
+          type="button"
+        >
+          Copy game report
+        </button>
+      </div>
+
+      <section class="summary-section">
+        <div class="summary-heading-row">
+          <h2 class="summary-heading">First Half</h2>
+        </div>
+
+        <div id="firstHalfSummary" class="summary-grid"></div>
+      </section>
+
+      <section class="summary-section">
+        <div class="summary-heading-row">
+          <h2 class="summary-heading">Second Half</h2>
+        </div>
+
+        <div id="secondHalfSummary" class="summary-grid"></div>
+      </section>
+
+      <section class="summary-section">
+        <div class="summary-heading-row">
+          <h2 class="summary-heading">Game Totals</h2>
+        </div>
+
+        <div id="gameSummary" class="summary-grid"></div>
+      </section>
+
+      <section class="summary-section">
+        <div class="summary-heading-row">
+          <h2 class="summary-heading">Quarter Breakdown</h2>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Quarter</th>
+                <th>OREB</th>
+                <th>DREB</th>
+                <th>Live TO</th>
+                <th>Dead TO</th>
+                <th>Opp OREB</th>
+              </tr>
+            </thead>
+
+            <tbody id="quarterTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
   </main>
+
+  <div id="savedMessage" class="saved-message">
+    Saved
+  </div>
 
   <script>
     const statDefinitions = [
       {
         key: "oreb",
-        label: "Our offensive rebounds"
+        name: "Our offensive rebounds",
+        shortName: "Our OREB",
+        className: "oreb"
       },
       {
         key: "dreb",
-        label: "Our defensive rebounds"
+        name: "Our defensive rebounds",
+        shortName: "Our DREB",
+        className: "dreb"
       },
       {
         key: "liveTurnovers",
-        label: "Live-ball turnovers"
+        name: "Live-ball turnovers",
+        shortName: "Live TO",
+        className: "live-turnover"
       },
       {
         key: "deadTurnovers",
-        label: "Dead-ball turnovers"
+        name: "Dead-ball turnovers",
+        shortName: "Dead TO",
+        className: "dead-turnover"
       },
       {
         key: "opponentOreb",
-        label: "Opponent offensive rebounds"
+        name: "Opponent offensive rebounds",
+        shortName: "Opp OREB",
+        className: "opponent-oreb"
       }
     ];
+
+    function emptyQuarter() {
+      return {
+        oreb: 0,
+        dreb: 0,
+        liveTurnovers: 0,
+        deadTurnovers: 0,
+        opponentOreb: 0
+      };
+    }
 
     function createNewGame() {
       return {
@@ -331,184 +664,356 @@
         quarter: 1,
         history: [],
         quarters: {
-          1: {
-            oreb: 0,
-            dreb: 0,
-            liveTurnovers: 0,
-            deadTurnovers: 0,
-            opponentOreb: 0
-          },
-          2: {
-            oreb: 0,
-            dreb: 0,
-            liveTurnovers: 0,
-            deadTurnovers: 0,
-            opponentOreb: 0
-          },
-          3: {
-            oreb: 0,
-            dreb: 0,
-            liveTurnovers: 0,
-            deadTurnovers: 0,
-            opponentOreb: 0
-          },
-          4: {
-            oreb: 0,
-            dreb: 0,
-            liveTurnovers: 0,
-            deadTurnovers: 0,
-            opponentOreb: 0
-          }
+          1: emptyQuarter(),
+          2: emptyQuarter(),
+          3: emptyQuarter(),
+          4: emptyQuarter()
         }
       };
     }
 
-    let gameState;
+    function loadGame() {
+      try {
+        const savedGame = JSON.parse(
+          localStorage.getItem("ladyLancersGameTracker")
+        );
 
-    try {
-      gameState =
-        JSON.parse(localStorage.getItem("basketballGameTracker")) ||
-        createNewGame();
-    } catch {
-      gameState = createNewGame();
+        if (savedGame && savedGame.quarters) {
+          return savedGame;
+        }
+
+        const previousVersion = JSON.parse(
+          localStorage.getItem("basketballGameTracker")
+        );
+
+        if (previousVersion && previousVersion.quarters) {
+          return previousVersion;
+        }
+      } catch (error) {
+        console.error("Unable to load saved game.", error);
+      }
+
+      return createNewGame();
     }
+
+    let gameState = loadGame();
 
     function saveGame() {
       localStorage.setItem(
-        "basketballGameTracker",
+        "ladyLancersGameTracker",
         JSON.stringify(gameState)
       );
     }
 
-    function getTotal(statKey) {
-      return [1, 2, 3, 4].reduce((total, quarter) => {
-        return total + gameState.quarters[quarter][statKey];
+    function getQuarterStat(quarter, statKey) {
+      return Number(
+        gameState.quarters[quarter][statKey] || 0
+      );
+    }
+
+    function getPeriodTotal(statKey, quarters) {
+      return quarters.reduce((total, quarter) => {
+        return total + getQuarterStat(quarter, statKey);
       }, 0);
     }
 
-    function changeStat(statKey, amount) {
+    function showSavedMessage(message = "Saved") {
+      const savedMessage =
+        document.getElementById("savedMessage");
+
+      savedMessage.textContent = message;
+      savedMessage.classList.add("visible");
+
+      clearTimeout(showSavedMessage.timeout);
+
+      showSavedMessage.timeout = setTimeout(() => {
+        savedMessage.classList.remove("visible");
+      }, 1100);
+    }
+
+    function addStat(statKey) {
       const quarter = gameState.quarter;
 
-      if (amount > 0) {
-        gameState.history.push({
-          quarter: quarter,
-          statKey: statKey
-        });
-      }
+      gameState.quarters[quarter][statKey] += 1;
 
-      gameState.quarters[quarter][statKey] = Math.max(
-        0,
-        gameState.quarters[quarter][statKey] + amount
-      );
+      gameState.history.push({
+        quarter,
+        statKey
+      });
+
+      if (gameState.history.length > 300) {
+        gameState.history.shift();
+      }
 
       saveGame();
       render();
+      showSavedMessage("+1 saved");
     }
 
     function undoLastTap() {
       const lastEntry = gameState.history.pop();
 
       if (!lastEntry) {
+        showSavedMessage("Nothing to undo");
         return;
       }
 
-      const quarter = lastEntry.quarter;
-      const statKey = lastEntry.statKey;
+      const currentValue =
+        gameState.quarters[lastEntry.quarter][
+          lastEntry.statKey
+        ];
 
-      gameState.quarters[quarter][statKey] = Math.max(
-        0,
-        gameState.quarters[quarter][statKey] - 1
-      );
+      gameState.quarters[lastEntry.quarter][
+        lastEntry.statKey
+      ] = Math.max(0, currentValue - 1);
 
       saveGame();
       render();
+      showSavedMessage("Last tap undone");
     }
 
-    function renderStatCards() {
-      const statGrid = document.getElementById("statGrid");
-      const currentQuarter = gameState.quarter;
+    function moveToNextQuarter() {
+      if (gameState.quarter >= 4) {
+        showSavedMessage("Already in Quarter 4");
+        return;
+      }
 
-      statGrid.innerHTML = statDefinitions
+      gameState.quarter += 1;
+
+      saveGame();
+      render();
+      showSavedMessage(`Quarter ${gameState.quarter}`);
+    }
+
+    function startNewGame() {
+      const confirmed = confirm(
+        "Clear the current game and start a new game?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      gameState = createNewGame();
+
+      saveGame();
+      render();
+      showSavedMessage("New game started");
+    }
+
+    function renderTrackingButtons() {
+      const trackingGrid =
+        document.getElementById("trackingGrid");
+
+      trackingGrid.innerHTML = statDefinitions
         .map((stat) => {
-          const currentCount =
-            gameState.quarters[currentQuarter][stat.key];
+          const count =
+            gameState.quarters[gameState.quarter][stat.key];
 
           return `
-            <article class="stat-card">
-              <div class="stat-label">${stat.label}</div>
+            <button
+              class="stat-button ${stat.className}"
+              type="button"
+              data-stat-key="${stat.key}"
+              aria-label="Add one ${stat.name}"
+            >
+              <span class="stat-name">
+                ${stat.name}
+              </span>
 
-              <div class="count">${currentCount}</div>
+              <span class="stat-count">
+                ${count}
+              </span>
 
-              <div class="counter-buttons">
-                <button
-                  class="minus-button"
-                  data-stat="${stat.key}"
-                  data-change="-1"
-                  aria-label="Subtract one ${stat.label}"
-                >
-                  −
-                </button>
-
-                <button
-                  class="plus-button"
-                  data-stat="${stat.key}"
-                  data-change="1"
-                  aria-label="Add one ${stat.label}"
-                >
-                  +
-                </button>
-              </div>
-            </article>
+              <span class="plus-symbol">
+                +
+              </span>
+            </button>
           `;
         })
         .join("");
 
       document
-        .querySelectorAll("[data-stat]")
+        .querySelectorAll("[data-stat-key]")
         .forEach((button) => {
           button.addEventListener("click", () => {
-            const statKey = button.dataset.stat;
-            const amount = Number(button.dataset.change);
-
-            changeStat(statKey, amount);
+            addStat(button.dataset.statKey);
           });
         });
     }
 
-    function renderTotals() {
-      document.getElementById("totalOreb").textContent =
-        getTotal("oreb");
-
-      document.getElementById("totalDreb").textContent =
-        getTotal("dreb");
-
-      document.getElementById("totalTurnovers").textContent =
-        getTotal("liveTurnovers") +
-        getTotal("deadTurnovers");
-
-      document.getElementById("totalOpponentOreb").textContent =
-        getTotal("opponentOreb");
-    }
-
-    function renderQuarterTable() {
-      const table = document.getElementById("quarterTable");
-
-      table.innerHTML = [1, 2, 3, 4]
-        .map((quarter) => {
-          const stats = gameState.quarters[quarter];
+    function createSummaryCards(quarters) {
+      return statDefinitions
+        .map((stat) => {
+          const total = getPeriodTotal(
+            stat.key,
+            quarters
+          );
 
           return `
-            <tr>
-              <td>Q${quarter}</td>
-              <td>${stats.oreb}</td>
-              <td>${stats.dreb}</td>
-              <td>${stats.liveTurnovers}</td>
-              <td>${stats.deadTurnovers}</td>
-              <td>${stats.opponentOreb}</td>
-            </tr>
+            <article
+              class="summary-card ${stat.className}"
+            >
+              <div class="summary-label">
+                ${stat.shortName}
+              </div>
+
+              <span class="summary-value">
+                ${total}
+              </span>
+            </article>
           `;
         })
         .join("");
+    }
+
+    function renderSummaries() {
+      document.getElementById(
+        "firstHalfSummary"
+      ).innerHTML = createSummaryCards([1, 2]);
+
+      document.getElementById(
+        "secondHalfSummary"
+      ).innerHTML = createSummaryCards([3, 4]);
+
+      document.getElementById(
+        "gameSummary"
+      ).innerHTML = createSummaryCards([1, 2, 3, 4]);
+    }
+
+    function renderQuarterTable() {
+      document.getElementById("quarterTable").innerHTML =
+        [1, 2, 3, 4]
+          .map((quarter) => {
+            const stats = gameState.quarters[quarter];
+
+            return `
+              <tr>
+                <td>Q${quarter}</td>
+                <td>${stats.oreb}</td>
+                <td>${stats.dreb}</td>
+                <td>${stats.liveTurnovers}</td>
+                <td>${stats.deadTurnovers}</td>
+                <td>${stats.opponentOreb}</td>
+              </tr>
+            `;
+          })
+          .join("");
+    }
+
+    function createReportText() {
+      const opponent =
+        gameState.opponent.trim() || "Opponent";
+
+      const lines = [
+        `Lady Lancers vs ${opponent}`,
+        "",
+        "FIRST HALF",
+        `OREB: ${getPeriodTotal("oreb", [1, 2])}`,
+        `DREB: ${getPeriodTotal("dreb", [1, 2])}`,
+        `Live TO: ${getPeriodTotal(
+          "liveTurnovers",
+          [1, 2]
+        )}`,
+        `Dead TO: ${getPeriodTotal(
+          "deadTurnovers",
+          [1, 2]
+        )}`,
+        `Opponent OREB: ${getPeriodTotal(
+          "opponentOreb",
+          [1, 2]
+        )}`,
+        "",
+        "SECOND HALF",
+        `OREB: ${getPeriodTotal("oreb", [3, 4])}`,
+        `DREB: ${getPeriodTotal("dreb", [3, 4])}`,
+        `Live TO: ${getPeriodTotal(
+          "liveTurnovers",
+          [3, 4]
+        )}`,
+        `Dead TO: ${getPeriodTotal(
+          "deadTurnovers",
+          [3, 4]
+        )}`,
+        `Opponent OREB: ${getPeriodTotal(
+          "opponentOreb",
+          [3, 4]
+        )}`,
+        "",
+        "GAME TOTALS",
+        `OREB: ${getPeriodTotal(
+          "oreb",
+          [1, 2, 3, 4]
+        )}`,
+        `DREB: ${getPeriodTotal(
+          "dreb",
+          [1, 2, 3, 4]
+        )}`,
+        `Live TO: ${getPeriodTotal(
+          "liveTurnovers",
+          [1, 2, 3, 4]
+        )}`,
+        `Dead TO: ${getPeriodTotal(
+          "deadTurnovers",
+          [1, 2, 3, 4]
+        )}`,
+        `Opponent OREB: ${getPeriodTotal(
+          "opponentOreb",
+          [1, 2, 3, 4]
+        )}`
+      ];
+
+      return lines.join("\n");
+    }
+
+    async function copyReport() {
+      const report = createReportText();
+
+      try {
+        await navigator.clipboard.writeText(report);
+        showSavedMessage("Report copied");
+      } catch (error) {
+        window.prompt(
+          "Copy this report:",
+          report
+        );
+      }
+    }
+
+    function showScreen(screenName) {
+      const trackScreen =
+        document.getElementById("trackScreen");
+
+      const summaryScreen =
+        document.getElementById("summaryScreen");
+
+      const trackTabButton =
+        document.getElementById("trackTabButton");
+
+      const summaryTabButton =
+        document.getElementById("summaryTabButton");
+
+      const showingTrack = screenName === "track";
+
+      trackScreen.classList.toggle(
+        "active",
+        showingTrack
+      );
+
+      summaryScreen.classList.toggle(
+        "active",
+        !showingTrack
+      );
+
+      trackTabButton.classList.toggle(
+        "active",
+        showingTrack
+      );
+
+      summaryTabButton.classList.toggle(
+        "active",
+        !showingTrack
+      );
     }
 
     function render() {
@@ -518,8 +1023,13 @@
       document.getElementById("quarter").value =
         String(gameState.quarter);
 
-      renderStatCards();
-      renderTotals();
+      document.getElementById(
+        "currentQuarterMessage"
+      ).textContent =
+        `Currently tracking Quarter ${gameState.quarter}`;
+
+      renderTrackingButtons();
+      renderSummaries();
       renderQuarterTable();
     }
 
@@ -539,15 +1049,15 @@
       });
 
     document
-      .getElementById("nextQuarter")
+      .getElementById("trackTabButton")
       .addEventListener("click", () => {
-        gameState.quarter = Math.min(
-          4,
-          gameState.quarter + 1
-        );
+        showScreen("track");
+      });
 
-        saveGame();
-        render();
+    document
+      .getElementById("summaryTabButton")
+      .addEventListener("click", () => {
+        showScreen("summary");
       });
 
     document
@@ -555,18 +1065,29 @@
       .addEventListener("click", undoLastTap);
 
     document
-      .getElementById("newGameButton")
-      .addEventListener("click", () => {
-        const confirmed = confirm(
-          "Clear all statistics and start a new game?"
-        );
+      .getElementById("nextQuarterButton")
+      .addEventListener("click", moveToNextQuarter);
 
-        if (confirmed) {
-          gameState = createNewGame();
-          saveGame();
-          render();
-        }
+    document
+      .getElementById("newGameButton")
+      .addEventListener("click", startNewGame);
+
+    document
+      .getElementById("copyReportButton")
+      .addEventListener("click", copyReport);
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("./service-worker.js")
+          .catch((error) => {
+            console.error(
+              "Service worker registration failed.",
+              error
+            );
+          });
       });
+    }
 
     render();
   </script>
