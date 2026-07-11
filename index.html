@@ -1,37 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
+  >
 
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta
     name="apple-mobile-web-app-status-bar-style"
     content="black-translucent"
-  />
+  >
+  <meta name="theme-color" content="#111827">
 
-  <meta name="theme-color" content="#111827" />
-
-  <link rel="manifest" href="./manifest.json" />
+  <link rel="manifest" href="./manifest.json">
 
   <title>Lady Lancers Game Tracker</title>
 
   <style>
     :root {
-      --page-background: #eef1f5;
+      --background: #eef1f5;
       --dark: #111827;
       --border: #d1d5db;
       --muted: #6b7280;
       --oreb: #15803d;
       --dreb: #1d4ed8;
-      --live-turnover: #d97706;
-      --dead-turnover: #4b5563;
-      --opponent-oreb: #b91c1c;
+      --live: #d97706;
+      --dead: #4b5563;
+      --opp: #b91c1c;
     }
 
     * {
@@ -50,7 +48,7 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-      background: var(--page-background);
+      background: var(--background);
       color: var(--dark);
     }
 
@@ -61,41 +59,41 @@
     }
 
     button {
-      touch-action: manipulation;
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .app {
       width: 100%;
-      max-width: 1050px;
+      max-width: 1080px;
       min-height: 100vh;
-      margin: 0 auto;
+      margin: auto;
       padding:
         max(18px, env(safe-area-inset-top))
         16px
         max(30px, env(safe-area-inset-bottom));
     }
 
-    .app-title {
+    h1 {
       margin: 0;
       font-size: clamp(28px, 5vw, 42px);
       font-weight: 900;
     }
 
-    .app-subtitle {
+    .subtitle {
       margin: 4px 0 16px;
       color: var(--muted);
     }
 
-    .game-information {
+    .game-info {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 10px;
       margin-bottom: 14px;
     }
 
-    .game-information input,
-    .game-information select {
+    .game-info input,
+    .game-info select {
       width: 100%;
       min-height: 56px;
       padding: 10px 13px;
@@ -116,7 +114,7 @@
       background: #dfe3e8;
     }
 
-    .tab-button {
+    .tab {
       min-height: 54px;
       border: 0;
       border-radius: 12px;
@@ -125,7 +123,7 @@
       font-weight: 850;
     }
 
-    .tab-button.active {
+    .tab.active {
       background: white;
       color: var(--dark);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
@@ -170,16 +168,16 @@
       background: var(--dreb);
     }
 
-    .live-turnover {
-      background: var(--live-turnover);
+    .live {
+      background: var(--live);
     }
 
-    .dead-turnover {
-      background: var(--dead-turnover);
+    .dead {
+      background: var(--dead);
     }
 
-    .opponent-oreb {
-      background: var(--opponent-oreb);
+    .opp {
+      background: var(--opp);
     }
 
     .stat-name {
@@ -199,7 +197,7 @@
       line-height: 0.95;
     }
 
-    .plus-symbol {
+    .plus {
       position: absolute;
       right: 18px;
       top: 50%;
@@ -212,16 +210,17 @@
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.16);
       font-size: 53px;
+      line-height: 1;
     }
 
-    .game-actions {
+    .actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: 16px;
     }
 
-    .action-button {
+    .action {
       min-height: 62px;
       padding: 10px;
       border: 2px solid var(--border);
@@ -232,23 +231,28 @@
       font-weight: 850;
     }
 
-    .next-quarter-button,
-    .save-game-button,
-    .copy-button {
+    .primary {
+      border-color: var(--dark);
       background: var(--dark);
       color: white;
-      border-color: var(--dark);
     }
 
-    .new-game-button {
+    .danger {
       color: #991b1b;
     }
 
-    .current-quarter-message {
+    .quarter-message {
       margin-top: 13px;
       text-align: center;
       color: var(--muted);
       font-weight: 750;
+    }
+
+    .summary-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
     }
 
     .summary-section {
@@ -289,25 +293,7 @@
       font-weight: 950;
     }
 
-    .summary-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    .summary-actions button {
-      min-height: 60px;
-      border-radius: 15px;
-      font-weight: 850;
-    }
-
-    .save-game-button,
-    .copy-button {
-      border: 0;
-    }
-
-    .table-wrapper {
+    .table-wrap {
       overflow-x: auto;
       border-radius: 17px;
       background: white;
@@ -340,6 +326,10 @@
       font-weight: 850;
     }
 
+    .history-toolbar {
+      margin-bottom: 14px;
+    }
+
     .saved-game {
       margin-bottom: 14px;
       padding: 16px;
@@ -348,7 +338,7 @@
       box-shadow: 0 2px 9px rgba(0, 0, 0, 0.08);
     }
 
-    .saved-game-header {
+    .saved-header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -372,14 +362,14 @@
       white-space: nowrap;
     }
 
-    .saved-game-actions {
+    .saved-actions {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
       margin-top: 14px;
     }
 
-    .saved-game-actions button {
+    .saved-actions button {
       min-height: 50px;
       border: 2px solid var(--border);
       border-radius: 12px;
@@ -387,13 +377,9 @@
       font-weight: 800;
     }
 
-    .delete-button {
-      color: #991b1b;
-    }
-
     .saved-details {
       display: none;
-      margin-top: 16px;
+      margin-top: 18px;
     }
 
     .saved-details.visible {
@@ -401,7 +387,7 @@
     }
 
     .empty-history {
-      padding: 28px;
+      padding: 30px;
       border-radius: 18px;
       background: white;
       text-align: center;
@@ -466,7 +452,7 @@
         font-size: 64px;
       }
 
-      .plus-symbol {
+      .plus {
         position: static;
         width: 78px;
         height: 78px;
@@ -476,10 +462,10 @@
     }
 
     @media (max-width: 540px) {
-      .game-information,
+      .game-info,
+      .actions,
       .summary-actions,
-      .game-actions,
-      .saved-game-actions {
+      .saved-actions {
         grid-template-columns: 1fr;
       }
 
@@ -492,18 +478,18 @@
 
 <body>
   <main class="app">
-    <h1 class="app-title">Lady Lancers Game Tracker</h1>
+    <h1>Lady Lancers Game Tracker</h1>
 
-    <p class="app-subtitle">
-      Track the current game and save completed games permanently.
+    <p class="subtitle">
+      Track the current game and save completed games.
     </p>
 
-    <section class="game-information">
+    <section class="game-info">
       <input
         id="opponent"
         type="text"
         placeholder="Opponent — for example, MMU"
-      />
+      >
 
       <select id="quarter">
         <option value="1">Quarter 1</option>
@@ -514,15 +500,15 @@
     </section>
 
     <nav class="tabs">
-      <button id="trackTab" class="tab-button active">
+      <button class="tab active" data-screen="track">
         🏀 Track
       </button>
 
-      <button id="summaryTab" class="tab-button">
+      <button class="tab" data-screen="summary">
         📊 Summary
       </button>
 
-      <button id="historyTab" class="tab-button">
+      <button class="tab" data-screen="history">
         💾 Saved Games
       </button>
     </nav>
@@ -530,39 +516,30 @@
     <section id="trackScreen" class="screen active">
       <div id="trackingGrid" class="tracking-grid"></div>
 
-      <div class="game-actions">
-        <button id="undoButton" class="action-button">
+      <div class="actions">
+        <button id="undoButton" class="action">
           Undo last tap
         </button>
 
-        <button
-          id="nextQuarterButton"
-          class="action-button next-quarter-button"
-        >
+        <button id="nextQuarterButton" class="action primary">
           Next quarter
         </button>
 
-        <button
-          id="newGameButton"
-          class="action-button new-game-button"
-        >
+        <button id="newGameButton" class="action danger">
           Start new game
         </button>
       </div>
 
-      <p
-        id="currentQuarterMessage"
-        class="current-quarter-message"
-      ></p>
+      <p id="quarterMessage" class="quarter-message"></p>
     </section>
 
     <section id="summaryScreen" class="screen">
       <div class="summary-actions">
-        <button id="saveGameButton" class="save-game-button">
+        <button id="saveGameButton" class="action primary">
           Save completed game
         </button>
 
-        <button id="copyReportButton" class="copy-button">
+        <button id="copyCurrentButton" class="action">
           Copy current report
         </button>
       </div>
@@ -585,7 +562,7 @@
       <section class="summary-section">
         <h2 class="summary-heading">Quarter Breakdown</h2>
 
-        <div class="table-wrapper">
+        <div class="table-wrap">
           <table>
             <thead>
               <tr>
@@ -605,6 +582,12 @@
     </section>
 
     <section id="historyScreen" class="screen">
+      <div class="history-toolbar">
+        <button id="exportButton" class="action primary">
+          Export all saved games to CSV
+        </button>
+      </div>
+
       <div id="savedGamesList"></div>
     </section>
   </main>
@@ -616,32 +599,32 @@
       {
         key: "oreb",
         name: "Our offensive rebounds",
-        shortName: "Our OREB",
+        short: "Our OREB",
         className: "oreb"
       },
       {
         key: "dreb",
         name: "Our defensive rebounds",
-        shortName: "Our DREB",
+        short: "Our DREB",
         className: "dreb"
       },
       {
         key: "liveTurnovers",
         name: "Live-ball turnovers",
-        shortName: "Live TO",
-        className: "live-turnover"
+        short: "Live TO",
+        className: "live"
       },
       {
         key: "deadTurnovers",
         name: "Dead-ball turnovers",
-        shortName: "Dead TO",
-        className: "dead-turnover"
+        short: "Dead TO",
+        className: "dead"
       },
       {
         key: "opponentOreb",
         name: "Opponent offensive rebounds",
-        shortName: "Opp OREB",
-        className: "opponent-oreb"
+        short: "Opp OREB",
+        className: "opp"
       }
     ];
 
@@ -669,32 +652,24 @@
       };
     }
 
-    function loadCurrentGame() {
+    function loadJSON(key, fallback) {
       try {
-        return (
-          JSON.parse(
-            localStorage.getItem("ladyLancersGameTracker")
-          ) || createNewGame()
-        );
+        const value = JSON.parse(localStorage.getItem(key));
+        return value || fallback;
       } catch {
-        return createNewGame();
+        return fallback;
       }
     }
 
-    function loadSavedGames() {
-      try {
-        return (
-          JSON.parse(
-            localStorage.getItem("ladyLancersSavedGames")
-          ) || []
-        );
-      } catch {
-        return [];
-      }
-    }
+    let gameState = loadJSON(
+      "ladyLancersGameTracker",
+      createNewGame()
+    );
 
-    let gameState = loadCurrentGame();
-    let savedGames = loadSavedGames();
+    let savedGames = loadJSON(
+      "ladyLancersSavedGames",
+      []
+    );
 
     function saveCurrentGame() {
       localStorage.setItem(
@@ -703,22 +678,19 @@
       );
     }
 
-    function saveGameHistory() {
+    function saveHistory() {
       localStorage.setItem(
         "ladyLancersSavedGames",
         JSON.stringify(savedGames)
       );
     }
 
-    function quarterValue(game, quarter, statKey) {
-      return Number(
-        game.quarters[quarter][statKey] || 0
-      );
-    }
-
     function periodTotal(game, statKey, quarters) {
       return quarters.reduce((total, quarter) => {
-        return total + quarterValue(game, quarter, statKey);
+        return (
+          total +
+          Number(game.quarters[quarter][statKey] || 0)
+        );
       }, 0);
     }
 
@@ -728,9 +700,9 @@
       toast.textContent = message;
       toast.classList.add("visible");
 
-      clearTimeout(showToast.timeout);
+      clearTimeout(showToast.timer);
 
-      showToast.timeout = setTimeout(() => {
+      showToast.timer = setTimeout(() => {
         toast.classList.remove("visible");
       }, 1200);
     }
@@ -769,21 +741,23 @@
       showToast("Last tap undone");
     }
 
-    function moveToNextQuarter() {
+    function nextQuarter() {
       if (gameState.quarter >= 4) {
         showToast("Already in Quarter 4");
         return;
       }
 
       gameState.quarter += 1;
+
       saveCurrentGame();
       render();
+
       showToast(`Quarter ${gameState.quarter}`);
     }
 
     function startNewGame() {
       const confirmed = confirm(
-        "Start a new game? Make sure the current game has been saved first."
+        "Start a new game? Save the current game first if you want to keep it."
       );
 
       if (!confirmed) {
@@ -791,16 +765,18 @@
       }
 
       gameState = createNewGame();
+
       saveCurrentGame();
       render();
       showScreen("track");
+
       showToast("New game started");
     }
 
     function saveCompletedGame() {
       const opponent =
         gameState.opponent.trim() ||
-        prompt("Who was the opponent?");
+        prompt("Enter the opponent:");
 
       if (!opponent) {
         return;
@@ -822,10 +798,19 @@
         return;
       }
 
-      const savedGame = {
+      const gameDate = prompt(
+        "Enter the game date:",
+        new Date().toLocaleDateString()
+      );
+
+      if (gameDate === null) {
+        return;
+      }
+
+      const completedGame = {
         id: Date.now(),
         opponent,
-        date: new Date().toLocaleDateString(),
+        date: gameDate,
         ourScore: ourScore.trim(),
         opponentScore: opponentScore.trim(),
         quarters: JSON.parse(
@@ -833,31 +818,56 @@
         )
       };
 
-      savedGames.unshift(savedGame);
-      saveGameHistory();
-      renderSavedGames();
-      showToast("Game saved");
+      savedGames.unshift(completedGame);
 
+      saveHistory();
+      renderSavedGames();
       showScreen("history");
+      showToast("Game saved");
     }
 
-    function createSummaryCards(game, quarters) {
+    function renderTrackingButtons() {
+      const grid =
+        document.getElementById("trackingGrid");
+
+      grid.innerHTML = statDefinitions
+        .map((stat) => {
+          const count =
+            gameState.quarters[gameState.quarter][stat.key];
+
+          return `
+            <button
+              class="stat-button ${stat.className}"
+              data-stat="${stat.key}"
+            >
+              <span class="stat-name">${stat.name}</span>
+              <span class="stat-count">${count}</span>
+              <span class="plus">+</span>
+            </button>
+          `;
+        })
+        .join("");
+
+      document
+        .querySelectorAll("[data-stat]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            addStat(button.dataset.stat);
+          });
+        });
+    }
+
+    function summaryCards(game, quarters) {
       return statDefinitions
         .map((stat) => {
-          const total = periodTotal(
-            game,
-            stat.key,
-            quarters
-          );
-
           return `
             <article class="summary-card ${stat.className}">
               <div class="summary-label">
-                ${stat.shortName}
+                ${stat.short}
               </div>
 
               <span class="summary-value">
-                ${total}
+                ${periodTotal(game, stat.key, quarters)}
               </span>
             </article>
           `;
@@ -865,7 +875,7 @@
         .join("");
     }
 
-    function createQuarterTable(game) {
+    function quarterRows(game) {
       return [1, 2, 3, 4]
         .map((quarter) => {
           const stats = game.quarters[quarter];
@@ -884,77 +894,39 @@
         .join("");
     }
 
-    function renderTrackingButtons() {
-      const grid =
-        document.getElementById("trackingGrid");
-
-      grid.innerHTML = statDefinitions
-        .map((stat) => {
-          const count =
-            gameState.quarters[gameState.quarter][stat.key];
-
-          return `
-            <button
-              class="stat-button ${stat.className}"
-              data-stat-key="${stat.key}"
-            >
-              <span class="stat-name">
-                ${stat.name}
-              </span>
-
-              <span class="stat-count">
-                ${count}
-              </span>
-
-              <span class="plus-symbol">
-                +
-              </span>
-            </button>
-          `;
-        })
-        .join("");
-
-      document
-        .querySelectorAll("[data-stat-key]")
-        .forEach((button) => {
-          button.addEventListener("click", () => {
-            addStat(button.dataset.statKey);
-          });
-        });
-    }
-
     function renderCurrentSummary() {
       document.getElementById(
         "firstHalfSummary"
-      ).innerHTML = createSummaryCards(
-        gameState,
-        [1, 2]
-      );
+      ).innerHTML = summaryCards(gameState, [1, 2]);
 
       document.getElementById(
         "secondHalfSummary"
-      ).innerHTML = createSummaryCards(
-        gameState,
-        [3, 4]
-      );
+      ).innerHTML = summaryCards(gameState, [3, 4]);
 
       document.getElementById(
         "gameSummary"
-      ).innerHTML = createSummaryCards(
+      ).innerHTML = summaryCards(
         gameState,
         [1, 2, 3, 4]
       );
 
       document.getElementById(
         "quarterTable"
-      ).innerHTML = createQuarterTable(gameState);
+      ).innerHTML = quarterRows(gameState);
     }
 
-    function createReportText(game) {
+    function createReport(game) {
       const opponent = game.opponent || "Opponent";
+
+      const score =
+        game.ourScore !== undefined
+          ? `Final Score: Lady Lancers ${game.ourScore}, ${opponent} ${game.opponentScore}`
+          : "";
 
       return [
         `Lady Lancers vs ${opponent}`,
+        game.date || "",
+        score,
         "",
         "FIRST HALF",
         `OREB: ${periodTotal(game, "oreb", [1, 2])}`,
@@ -1020,10 +992,14 @@
           "opponentOreb",
           [1, 2, 3, 4]
         )}`
-      ].join("\n");
+      ]
+        .filter((line) => line !== "")
+        .join("\n");
     }
 
-    async function copyText(text) {
+    async function copyReport(game) {
+      const text = createReport(game);
+
       try {
         await navigator.clipboard.writeText(text);
         showToast("Report copied");
@@ -1032,14 +1008,14 @@
       }
     }
 
-    function toggleSavedDetails(id) {
+    function toggleDetails(id) {
       const details =
         document.getElementById(`details-${id}`);
 
       details.classList.toggle("visible");
     }
 
-    function deleteSavedGame(id) {
+    function deleteGame(id) {
       const confirmed = confirm(
         "Permanently delete this saved game?"
       );
@@ -1052,8 +1028,9 @@
         (game) => game.id !== id
       );
 
-      saveGameHistory();
+      saveHistory();
       renderSavedGames();
+
       showToast("Game deleted");
     }
 
@@ -1064,7 +1041,7 @@
       if (savedGames.length === 0) {
         list.innerHTML = `
           <div class="empty-history">
-            No games have been saved yet.
+            No completed games have been saved yet.
           </div>
         `;
 
@@ -1075,7 +1052,7 @@
         .map((game) => {
           return `
             <article class="saved-game">
-              <div class="saved-game-header">
+              <div class="saved-header">
                 <div>
                   <h2 class="saved-opponent">
                     Lady Lancers vs ${game.opponent}
@@ -1091,28 +1068,18 @@
                 </div>
               </div>
 
-              <div class="saved-game-actions">
-                <button
-                  onclick="toggleSavedDetails(${game.id})"
-                >
+              <div class="saved-actions">
+                <button data-view="${game.id}">
                   View stats
                 </button>
 
-                <button
-                  onclick="copyText(
-                    createReportText(
-                      savedGames.find(
-                        game => game.id === ${game.id}
-                      )
-                    )
-                  )"
-                >
+                <button data-copy="${game.id}">
                   Copy report
                 </button>
 
                 <button
-                  class="delete-button"
-                  onclick="deleteSavedGame(${game.id})"
+                  class="danger"
+                  data-delete="${game.id}"
                 >
                   Delete
                 </button>
@@ -1125,27 +1092,24 @@
                 <h3>First Half</h3>
 
                 <div class="summary-grid">
-                  ${createSummaryCards(game, [1, 2])}
+                  ${summaryCards(game, [1, 2])}
                 </div>
 
                 <h3>Second Half</h3>
 
                 <div class="summary-grid">
-                  ${createSummaryCards(game, [3, 4])}
+                  ${summaryCards(game, [3, 4])}
                 </div>
 
                 <h3>Game Totals</h3>
 
                 <div class="summary-grid">
-                  ${createSummaryCards(
-                    game,
-                    [1, 2, 3, 4]
-                  )}
+                  ${summaryCards(game, [1, 2, 3, 4])}
                 </div>
 
                 <h3>Quarter Breakdown</h3>
 
-                <div class="table-wrapper">
+                <div class="table-wrap">
                   <table>
                     <thead>
                       <tr>
@@ -1159,7 +1123,7 @@
                     </thead>
 
                     <tbody>
-                      ${createQuarterTable(game)}
+                      ${quarterRows(game)}
                     </tbody>
                   </table>
                 </div>
@@ -1168,32 +1132,126 @@
           `;
         })
         .join("");
+
+      document
+        .querySelectorAll("[data-view]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            toggleDetails(Number(button.dataset.view));
+          });
+        });
+
+      document
+        .querySelectorAll("[data-copy]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            const game = savedGames.find(
+              (item) =>
+                item.id === Number(button.dataset.copy)
+            );
+
+            copyReport(game);
+          });
+        });
+
+      document
+        .querySelectorAll("[data-delete]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            deleteGame(Number(button.dataset.delete));
+          });
+        });
+    }
+
+    function exportCSV() {
+      if (savedGames.length === 0) {
+        showToast("No saved games to export");
+        return;
+      }
+
+      const rows = [
+        [
+          "Date",
+          "Opponent",
+          "Lady Lancers Score",
+          "Opponent Score",
+          "Quarter",
+          "OREB",
+          "DREB",
+          "Live TO",
+          "Dead TO",
+          "Opponent OREB"
+        ]
+      ];
+
+      savedGames.forEach((game) => {
+        [1, 2, 3, 4].forEach((quarter) => {
+          const stats = game.quarters[quarter];
+
+          rows.push([
+            game.date,
+            game.opponent,
+            game.ourScore,
+            game.opponentScore,
+            `Q${quarter}`,
+            stats.oreb,
+            stats.dreb,
+            stats.liveTurnovers,
+            stats.deadTurnovers,
+            stats.opponentOreb
+          ]);
+        });
+      });
+
+      const csv = rows
+        .map((row) =>
+          row
+            .map((value) =>
+              `"${String(value).replaceAll('"', '""')}"`
+            )
+            .join(",")
+        )
+        .join("\n");
+
+      const blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "lady-lancers-saved-games.csv";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      URL.revokeObjectURL(url);
+
+      showToast("CSV exported");
     }
 
     function showScreen(name) {
-      const screens = {
-        track: document.getElementById("trackScreen"),
-        summary: document.getElementById("summaryScreen"),
-        history: document.getElementById("historyScreen")
-      };
+      document
+        .querySelectorAll(".screen")
+        .forEach((screen) => {
+          screen.classList.remove("active");
+        });
 
-      const tabs = {
-        track: document.getElementById("trackTab"),
-        summary: document.getElementById("summaryTab"),
-        history: document.getElementById("historyTab")
-      };
+      document
+        .querySelectorAll(".tab")
+        .forEach((tab) => {
+          tab.classList.remove("active");
+        });
 
-      Object.keys(screens).forEach((key) => {
-        screens[key].classList.toggle(
-          "active",
-          key === name
-        );
+      document
+        .getElementById(`${name}Screen`)
+        .classList.add("active");
 
-        tabs[key].classList.toggle(
-          "active",
-          key === name
-        );
-      });
+      document
+        .querySelector(`[data-screen="${name}"]`)
+        .classList.add("active");
 
       if (name === "history") {
         renderSavedGames();
@@ -1208,7 +1266,7 @@
         String(gameState.quarter);
 
       document.getElementById(
-        "currentQuarterMessage"
+        "quarterMessage"
       ).textContent =
         `Currently tracking Quarter ${gameState.quarter}`;
 
@@ -1233,21 +1291,11 @@
       });
 
     document
-      .getElementById("trackTab")
-      .addEventListener("click", () => {
-        showScreen("track");
-      });
-
-    document
-      .getElementById("summaryTab")
-      .addEventListener("click", () => {
-        showScreen("summary");
-      });
-
-    document
-      .getElementById("historyTab")
-      .addEventListener("click", () => {
-        showScreen("history");
+      .querySelectorAll("[data-screen]")
+      .forEach((button) => {
+        button.addEventListener("click", () => {
+          showScreen(button.dataset.screen);
+        });
       });
 
     document
@@ -1256,7 +1304,7 @@
 
     document
       .getElementById("nextQuarterButton")
-      .addEventListener("click", moveToNextQuarter);
+      .addEventListener("click", nextQuarter);
 
     document
       .getElementById("newGameButton")
@@ -1267,10 +1315,14 @@
       .addEventListener("click", saveCompletedGame);
 
     document
-      .getElementById("copyReportButton")
+      .getElementById("copyCurrentButton")
       .addEventListener("click", () => {
-        copyText(createReportText(gameState));
+        copyReport(gameState);
       });
+
+    document
+      .getElementById("exportButton")
+      .addEventListener("click", exportCSV);
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
