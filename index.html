@@ -48,14 +48,14 @@
 
     body {
       margin: 0;
+      background: var(--background);
+      color: var(--dark);
       font-family:
         system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-      background: var(--background);
-      color: var(--dark);
     }
 
     button,
@@ -83,11 +83,11 @@
     h1 {
       margin: 0;
       font-size: clamp(28px, 5vw, 42px);
-      font-weight: 900;
+      font-weight: 950;
     }
 
     .subtitle {
-      margin: 4px 0 16px;
+      margin: 5px 0 16px;
       color: var(--muted);
     }
 
@@ -107,7 +107,7 @@
       border-radius: 14px;
       background: white;
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 750;
     }
 
     .tabs {
@@ -149,23 +149,11 @@
       gap: 13px;
     }
 
-    .stat-button {
-      position: relative;
-      width: 100%;
-      min-height: 132px;
-      padding: 16px;
-      border: 0;
+    .stat-card {
+      overflow: hidden;
       border-radius: 22px;
       color: white;
-      text-align: left;
       box-shadow: 0 5px 14px rgba(0, 0, 0, 0.14);
-    }
-
-    .stat-button:active,
-    .transition-buttons button:active,
-    .player-buttons button:active {
-      transform: scale(0.98);
-      filter: brightness(0.92);
     }
 
     .oreb {
@@ -192,10 +180,16 @@
       background: var(--transition);
     }
 
+    .stat-display {
+      min-height: 118px;
+      padding: 16px;
+      text-align: center;
+    }
+
     .stat-name {
       display: block;
-      max-width: 72%;
-      font-size: clamp(18px, 3.5vw, 25px);
+      min-height: 45px;
+      font-size: clamp(18px, 3.5vw, 24px);
       font-weight: 900;
       line-height: 1.08;
       text-transform: uppercase;
@@ -203,26 +197,38 @@
 
     .stat-count {
       display: block;
-      margin-top: 9px;
-      font-size: clamp(42px, 9vw, 70px);
+      margin-top: 5px;
+      font-size: clamp(46px, 9vw, 68px);
       font-weight: 950;
-      line-height: 0.95;
+      line-height: 1;
     }
 
-    .plus-symbol {
-      position: absolute;
-      right: 18px;
-      top: 50%;
+    .stat-controls {
       display: grid;
-      width: 72px;
-      height: 72px;
-      place-items: center;
-      transform: translateY(-50%);
-      border: 3px solid rgba(255, 255, 255, 0.75);
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.16);
-      font-size: 53px;
-      line-height: 1;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      padding: 2px;
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .stat-control {
+      min-height: 68px;
+      border: 0;
+      background: rgba(0, 0, 0, 0.12);
+      color: white;
+      font-size: 25px;
+      font-weight: 950;
+    }
+
+    .stat-control.add {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .stat-control:active,
+    .transition-buttons button:active,
+    .player-buttons button:active {
+      transform: scale(0.98);
+      filter: brightness(0.9);
     }
 
     .transition-panel {
@@ -256,23 +262,27 @@
 
     .transition-buttons {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
+      grid-template-columns: 1.25fr 1fr 1fr 1fr;
+      gap: 8px;
     }
 
     .transition-buttons button {
       min-height: 68px;
-      border: 3px solid rgba(255, 255, 255, 0.7);
-      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      border-radius: 14px;
       background: rgba(255, 255, 255, 0.16);
       color: white;
-      font-size: 23px;
+      font-size: 21px;
       font-weight: 950;
+    }
+
+    .transition-buttons .transition-undo {
+      background: rgba(0, 0, 0, 0.23);
     }
 
     .actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       margin-top: 16px;
     }
@@ -284,7 +294,7 @@
       border-radius: 15px;
       background: white;
       color: var(--dark);
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 850;
     }
 
@@ -300,8 +310,8 @@
 
     .quarter-message {
       margin-top: 13px;
-      text-align: center;
       color: var(--muted);
+      text-align: center;
       font-weight: 750;
     }
 
@@ -356,7 +366,7 @@
 
     .player-buttons {
       display: grid;
-      grid-template-columns: 1.15fr 1fr 1fr 1fr;
+      grid-template-columns: 1.25fr 1fr 1fr 1fr;
       gap: 8px;
     }
 
@@ -457,8 +467,8 @@
       margin-bottom: 18px;
       padding: 14px;
       border-radius: 14px;
-      font-weight: 850;
       text-align: center;
+      font-weight: 850;
     }
 
     .score-check.match {
@@ -568,8 +578,8 @@
       padding: 30px;
       border-radius: 18px;
       background: white;
-      text-align: center;
       color: var(--muted);
+      text-align: center;
     }
 
     .toast {
@@ -597,7 +607,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .stat-button:last-child {
+      .stat-card:last-child {
         grid-column: 1 / -1;
       }
 
@@ -615,31 +625,8 @@
         grid-template-columns: repeat(5, minmax(0, 1fr));
       }
 
-      .stat-button {
-        min-height: 230px;
-        text-align: center;
-      }
-
-      .stat-button:last-child {
+      .stat-card:last-child {
         grid-column: auto;
-      }
-
-      .stat-name {
-        max-width: none;
-        min-height: 60px;
-        font-size: 18px;
-      }
-
-      .stat-count {
-        font-size: 64px;
-      }
-
-      .plus-symbol {
-        position: static;
-        width: 78px;
-        height: 78px;
-        margin: 18px auto 0;
-        transform: none;
       }
 
       .player-list {
@@ -651,7 +638,7 @@
       }
     }
 
-    @media (max-width: 540px) {
+    @media (max-width: 620px) {
       .game-info,
       .actions,
       .summary-actions,
@@ -661,6 +648,14 @@
 
       .tabs {
         grid-template-columns: 1fr;
+      }
+
+      .transition-buttons {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .transition-undo {
+        grid-column: 1 / -1;
       }
 
       .player-buttons {
@@ -727,6 +722,13 @@
         </div>
 
         <div class="transition-buttons">
+          <button
+            id="undoTransitionButton"
+            class="transition-undo"
+          >
+            Undo
+          </button>
+
           <button data-transition-points="1">+1</button>
           <button data-transition-points="2">+2</button>
           <button data-transition-points="3">+3</button>
@@ -734,8 +736,8 @@
       </section>
 
       <div class="actions">
-        <button id="undoButton" class="action">
-          Undo last team stat
+        <button id="globalUndoButton" class="action">
+          Undo last team action
         </button>
 
         <button id="nextQuarterButton" class="action primary">
@@ -759,7 +761,10 @@
             Player Points Total
           </div>
 
-          <span id="teamPointsTotal" class="team-points-value">
+          <span
+            id="teamPointsTotal"
+            class="team-points-value"
+          >
             0
           </span>
         </div>
@@ -938,6 +943,7 @@
         opponent: "",
         quarter: 1,
         history: [],
+        transitionEntries: [],
         quarters: {
           1: emptyQuarter(),
           2: emptyQuarter(),
@@ -1000,10 +1006,10 @@
           ...(normalized.quarters[quarter] || {})
         };
 
-        normalized.quarters[quarter].transitionPoints =
-          Number(
-            normalized.quarters[quarter].transitionPoints || 0
-          );
+        Object.keys(emptyQuarter()).forEach((key) => {
+          normalized.quarters[quarter][key] =
+            Number(normalized.quarters[quarter][key] || 0);
+        });
       });
 
       if (!normalized.players) {
@@ -1018,6 +1024,16 @@
       if (!Array.isArray(normalized.history)) {
         normalized.history = [];
       }
+
+      if (!Array.isArray(normalized.transitionEntries)) {
+        normalized.transitionEntries = [];
+      }
+
+      normalized.transitionEntries =
+        normalized.transitionEntries.map((entry) => ({
+          quarter: Number(entry.quarter || 1),
+          points: Number(entry.points || 0)
+        }));
 
       normalized.quarter = Number(normalized.quarter || 1);
 
@@ -1090,6 +1106,14 @@
       }, 0);
     }
 
+    function statName(statKey) {
+      const definition = statDefinitions.find(
+        (stat) => stat.key === statKey
+      );
+
+      return definition?.short || statKey;
+    }
+
     function showToast(message) {
       const toast = document.getElementById("toast");
 
@@ -1103,20 +1127,34 @@
       }, 1200);
     }
 
-    function addStat(statKey) {
+    function changeTeamStat(statKey, amount) {
       const quarter = gameState.quarter;
+      const current =
+        Number(gameState.quarters[quarter][statKey] || 0);
 
-      gameState.quarters[quarter][statKey] += 1;
+      if (amount < 0 && current <= 0) {
+        showToast(`${statName(statKey)} is already 0`);
+        return;
+      }
+
+      gameState.quarters[quarter][statKey] =
+        Math.max(0, current + amount);
 
       gameState.history.push({
+        type: "stat-change",
         quarter,
         statKey,
-        amount: 1
+        amount
       });
 
       saveCurrentGame();
       render();
-      showToast("+1 team stat saved");
+
+      const symbol = amount > 0 ? "+" : "";
+
+      showToast(
+        `${statName(statKey)} ${symbol}${amount}`
+      );
     }
 
     function addTransitionPoints(points) {
@@ -1124,10 +1162,17 @@
 
       gameState.quarters[quarter].transitionPoints += points;
 
-      gameState.history.push({
+      const transitionEntry = {
         quarter,
-        statKey: "transitionPoints",
-        amount: points
+        points
+      };
+
+      gameState.transitionEntries.push(transitionEntry);
+
+      gameState.history.push({
+        type: "transition-add",
+        quarter,
+        points
       });
 
       saveCurrentGame();
@@ -1138,34 +1183,111 @@
       );
     }
 
-    function undoLastTeamStat() {
-      const last = gameState.history.pop();
+    function removeMatchingTransitionEntry(quarter, points) {
+      for (
+        let index = gameState.transitionEntries.length - 1;
+        index >= 0;
+        index -= 1
+      ) {
+        const entry = gameState.transitionEntries[index];
 
-      if (!last) {
-        showToast("No team stat to undo");
+        if (
+          entry.quarter === quarter &&
+          entry.points === points
+        ) {
+          gameState.transitionEntries.splice(index, 1);
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    function undoLastTransition() {
+      const entry = gameState.transitionEntries.pop();
+
+      if (!entry) {
+        showToast("No transition score to undo");
         return;
       }
 
-      const amount = Number(last.amount || 1);
-
-      gameState.quarters[last.quarter][last.statKey] =
+      gameState.quarters[entry.quarter].transitionPoints =
         Math.max(
           0,
-          Number(
-            gameState.quarters[last.quarter][last.statKey] || 0
-          ) - amount
+          gameState.quarters[entry.quarter].transitionPoints -
+            entry.points
         );
+
+      gameState.history.push({
+        type: "transition-remove",
+        quarter: entry.quarter,
+        points: entry.points
+      });
 
       saveCurrentGame();
       render();
 
-      if (last.statKey === "transitionPoints") {
-        showToast(
-          `Last ${amount} transition points removed`
-        );
-      } else {
-        showToast("Last team stat undone");
+      showToast(
+        `Transition +${entry.points} removed from Quarter ${entry.quarter}`
+      );
+    }
+
+    function undoLastTeamAction() {
+      const last = gameState.history.pop();
+
+      if (!last) {
+        showToast("No team action to undo");
+        return;
       }
+
+      if (last.type === "stat-change") {
+        gameState.quarters[last.quarter][last.statKey] =
+          Math.max(
+            0,
+            Number(
+              gameState.quarters[last.quarter][last.statKey] || 0
+            ) - last.amount
+          );
+
+        showToast("Last team-stat action undone");
+      }
+
+      if (last.type === "transition-add") {
+        gameState.quarters[
+          last.quarter
+        ].transitionPoints = Math.max(
+          0,
+          gameState.quarters[last.quarter].transitionPoints -
+            last.points
+        );
+
+        removeMatchingTransitionEntry(
+          last.quarter,
+          last.points
+        );
+
+        showToast(
+          `Transition +${last.points} undone`
+        );
+      }
+
+      if (last.type === "transition-remove") {
+        gameState.quarters[
+          last.quarter
+        ].transitionPoints += last.points;
+
+        gameState.transitionEntries.push({
+          quarter: last.quarter,
+          points: last.points
+        });
+
+        showToast(
+          `Transition +${last.points} restored`
+        );
+      }
+
+      saveCurrentGame();
+      render();
     }
 
     function addPlayerPoints(playerName, points) {
@@ -1287,7 +1409,7 @@
         const difference = numericOurScore - playerTotal;
 
         const continueSaving = confirm(
-          `The final score entered is ${numericOurScore}, but the player points total is ${playerTotal}.\n\nDifference: ${difference > 0 ? "+" : ""}${difference}\n\nSave the game anyway?`
+          `The final score entered is ${numericOurScore}, but the player-points total is ${playerTotal}.\n\nDifference: ${difference > 0 ? "+" : ""}${difference}\n\nSave the game anyway?`
         );
 
         if (!continueSaving) {
@@ -1327,31 +1449,49 @@
             gameState.quarters[gameState.quarter][stat.key];
 
           return `
-            <button
-              class="stat-button ${stat.className}"
-              data-stat="${stat.key}"
-            >
-              <span class="stat-name">
-                ${stat.name}
-              </span>
+            <article class="stat-card ${stat.className}">
+              <div class="stat-display">
+                <span class="stat-name">
+                  ${stat.name}
+                </span>
 
-              <span class="stat-count">
-                ${count}
-              </span>
+                <span class="stat-count">
+                  ${count}
+                </span>
+              </div>
 
-              <span class="plus-symbol">
-                +
-              </span>
-            </button>
+              <div class="stat-controls">
+                <button
+                  class="stat-control subtract"
+                  data-stat="${stat.key}"
+                  data-amount="-1"
+                  aria-label="Subtract one ${stat.name}"
+                >
+                  −1
+                </button>
+
+                <button
+                  class="stat-control add"
+                  data-stat="${stat.key}"
+                  data-amount="1"
+                  aria-label="Add one ${stat.name}"
+                >
+                  +1
+                </button>
+              </div>
+            </article>
           `;
         })
         .join("");
 
       document
-        .querySelectorAll("[data-stat]")
+        .querySelectorAll("[data-stat][data-amount]")
         .forEach((button) => {
           button.addEventListener("click", () => {
-            addStat(button.dataset.stat);
+            changeTeamStat(
+              button.dataset.stat,
+              Number(button.dataset.amount)
+            );
           });
         });
     }
@@ -2095,8 +2235,12 @@
       });
 
     document
-      .getElementById("undoButton")
-      .addEventListener("click", undoLastTeamStat);
+      .getElementById("undoTransitionButton")
+      .addEventListener("click", undoLastTransition);
+
+    document
+      .getElementById("globalUndoButton")
+      .addEventListener("click", undoLastTeamAction);
 
     document
       .getElementById("nextQuarterButton")
